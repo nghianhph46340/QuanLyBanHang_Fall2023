@@ -49,15 +49,16 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     void loadDataGH(ArrayList<SanPham> listGioHang) {
         DefaultTableModel dftmgh = (DefaultTableModel) tblGioHang.getModel();
         Integer stt = 1;
+        Integer soLuong = 1;
         dftmgh.setRowCount(0);
         for (SanPham sanPham : listGioHang) {
             dftmgh.addRow(new Object[]{
                 stt++,
                 sanPham.getMaSp(),
                 sanPham.getTenSP(),
-                sanPham.getSoLuong(),
+                soLuong++,
                 sanPham.getGiaBan(),
-                sanPham.getSoLuong() * sanPham.getGiaBan()
+                soLuong * sanPham.getGiaBan()
             });
         }
     }
