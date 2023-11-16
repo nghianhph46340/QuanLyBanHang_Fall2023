@@ -23,8 +23,8 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
     public ChucNangBanHangView() {
         initComponents();
-        ArrayList<SanPham> list = quanLyBanHang.getListSanPham();
-        loadData(list);
+        ArrayList<SanPham> list = quanLyBanHang.getListSanPham();     
+        loadData(list);   
     }
 
     void loadData(ArrayList<SanPham> list) {
@@ -42,6 +42,22 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                 sanPham.getSoLuong(),
                 sanPham.getGiaNhap(),
                 sanPham.getGiaBan()
+            });
+        }
+    }
+
+    void loadDataGH(ArrayList<SanPham> listGioHang) {
+        DefaultTableModel dftmgh = (DefaultTableModel) tblGioHang.getModel();
+        Integer stt = 1;
+        dftmgh.setRowCount(0);
+        for (SanPham sanPham : listGioHang) {
+            dftmgh.addRow(new Object[]{
+                stt++,
+                sanPham.getMaSp(),
+                sanPham.getTenSP(),
+                sanPham.getSoLuong(),
+                sanPham.getGiaBan(),
+                sanPham.getSoLuong() * sanPham.getGiaBan()
             });
         }
     }
@@ -248,6 +264,11 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                 "STT", "Mã SP", "Tên Sp", "Năm bắt đầu", "Trọng lượng", "Mô tả", "SL SP", "Giá nhập", "Giá bán"
             }
         ));
+        tblChiTietSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblChiTietSanPhamMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblChiTietSanPham);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -367,7 +388,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
     private void btnThemSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemSanPhamMouseClicked
         // TODO add your handling code here:
-        
+
         int i = tblChiTietSanPham.getSelectedRow();
         String maSp = (String) tblChiTietSanPham.getValueAt(i, 1);
         String tenSp = (String) tblChiTietSanPham.getValueAt(i, 2);
@@ -375,46 +396,24 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         Double donGia = (Double) tblChiTietSanPham.getValueAt(i, 8);
         Double thanhTien = donGia * soLuong;
         //Tạo đối tượng mới từ dữ liệu sẵn có
-        GioHang gioHangNew = new GioHang(maSp, tenSp, soLuong, donGia, thanhTien);
-        
-        System.out.println(gioHangNew);
-        ArrayList<GioHang> gioHang = new ArrayList<>();
-        gioHang.add(gioHangNew);
-        dftm = (DefaultTableModel) tblGioHang.getModel();
-        Integer stt = 1;
-        dftm.setRowCount(0);
-        for (GioHang gioHang1 : gioHang) {
-            dftm.addRow(new Object[]{
-                stt++,
-                gioHang1.getMaSP(),
-                gioHang1.getTenSp(),
-                gioHang1.getSoLuong(),
-                gioHang1.getDonGia(),
-                gioHang1.getThanhTien()
-            });
-        }
+        //GioHang gioHangNew = new GioHang(maSp, tenSp, soLuong, donGia, thanhTien);
 
-//        ArrayList<SanPham> listSp = (ArrayList<SanPham>) tblChiTietSanPham.getModel();
-//        
-//        Integer stt = 1;
-//        ArrayList<GioHang> gioHang = quanLyBanHang.listTraGioHang(listSp);
-//        for (GioHang gioHang1 : gioHang) {
-//            gioHang1.toString();
-//        }
-//        stt++;
-//        for (int j = 0; j < listSp.size(); j++) {
-//            String maSP = listSp.get(i).getMaSp();
-//            String tenSP = listSp.get(i).getTenSP();
-//
-//            if (listSp.get(i).getSoLuong() <= 0) {
-//                JOptionPane.showMessageDialog(this, "Số lượng không đủ");
-//            } else {
-//
-//            }
-//        }
-        //Integer soLuong = (Integer) tblChiTietSanPham.getValueAt(i, 7);
+        //System.out.println(gioHangNew);
+        // Boolean check = quanLyBanHang.themSpGioHang(maSp);
+        //gioHang.add(gioHangNew);
+        ArrayList<SanPham> listGHTV = quanLyBanHang.themSpGioHang(maSp);
+        for (SanPham sanPham : listGHTV) {
+            sanPham.inThonTin();
+            
+        }
+        loadDataGH(listGHTV);
 
     }//GEN-LAST:event_btnThemSanPhamMouseClicked
+
+    private void tblChiTietSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChiTietSanPhamMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_tblChiTietSanPhamMouseClicked
 
     /**
      * @param args the command line arguments

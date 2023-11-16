@@ -16,6 +16,7 @@ public class QuanLyBanHang {
     Scanner sc = new Scanner(System.in);
 
     ArrayList<SanPham> listSanPham = new ArrayList<>();
+    ArrayList<SanPham> listGioHang = new ArrayList<>();
 
     public QuanLyBanHang() {
         listSanPham.add(new SanPham("SP01", "Bánh kẹo", "2020", 10.5, "Bánh kẹo hoà bình", 45, 15000.00, 17000.00));
@@ -31,28 +32,42 @@ public class QuanLyBanHang {
         return listSanPham;
     }
 
-    ArrayList<GioHang> listTraGioHang(ArrayList<SanPham> listSp) {
-        ArrayList<GioHang> listSPGioHang = new ArrayList<>();
-        GioHang gioHang = new GioHang();
-//        for (int i = 0; i < listSp.size(); i++) {
-//            String maSP = listSp.get(i).getMaSp();
-//            String tenSP = listSp.get(i).getTenSP();
-//            Integer soLuong = listSp.get(i).getSoLuong();
-//            Double donGia = listSp.get(i).getGiaBan();
-//            Double thanhTien = donGia * soLuong;
-//        }
-//        String maSP = listSp.get(0).getMaSp();
-//        gioHang.setMaSP(maSP);
-//        String tenSP = listSp.get(0).getTenSP();
-//        gioHang.setTenSp(tenSP);
-//        Integer soLuong = listSp.get(0).getSoLuong();
-//        gioHang.setSoLuong(soLuong);
-//        Double donGia = listSp.get(0).getGiaBan();
-//        gioHang.setDonGia(donGia);
-//        Double thanhTien = donGia * soLuong;
-//        gioHang.setThanhTien(thanhTien);
-//        listSPGioHang.add(gioHang);
+    ArrayList<SanPham> themSpGioHang(String maSp) {
 
-        return listSPGioHang;
+        for (SanPham sanPham : listSanPham) {
+            if (sanPham.getMaSp().equals(maSp)) {
+                listGioHang.add(sanPham);
+                return listGioHang;
+            }
+        }
+        return null;
     }
+    ArrayList<SanPham> getListGioHang(){
+        return listGioHang;
+    }
+
+//    ArrayList<GioHang> listTraGioHang(ArrayList<SanPham> listSp) {
+//        ArrayList<GioHang> listSPGioHang = new ArrayList<>();
+//        GioHang gioHang = new GioHang();
+////        for (int i = 0; i < listSp.size(); i++) {
+////            String maSP = listSp.get(i).getMaSp();
+////            String tenSP = listSp.get(i).getTenSP();
+////            Integer soLuong = listSp.get(i).getSoLuong();
+////            Double donGia = listSp.get(i).getGiaBan();
+////            Double thanhTien = donGia * soLuong;
+////        }
+////        String maSP = listSp.get(0).getMaSp();
+////        gioHang.setMaSP(maSP);
+////        String tenSP = listSp.get(0).getTenSP();
+////        gioHang.setTenSp(tenSP);
+////        Integer soLuong = listSp.get(0).getSoLuong();
+////        gioHang.setSoLuong(soLuong);
+////        Double donGia = listSp.get(0).getGiaBan();
+////        gioHang.setDonGia(donGia);
+////        Double thanhTien = donGia * soLuong;
+////        gioHang.setThanhTien(thanhTien);
+////        listSPGioHang.add(gioHang);
+//
+//        return listSPGioHang;
+//    }
 }

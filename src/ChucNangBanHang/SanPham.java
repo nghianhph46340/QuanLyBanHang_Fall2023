@@ -9,6 +9,7 @@ package ChucNangBanHang;
  * @author NGHIAPC
  */
 public class SanPham {
+
     private String maSp;
     private String tenSP;
     private String NamB;
@@ -95,5 +96,13 @@ public class SanPham {
     public void setGiaBan(Double giaBan) {
         this.giaBan = giaBan;
     }
-     
+
+    @Override
+    public String toString() {
+        return "SanPham{" + "maSp=" + maSp + ", tenSP=" + tenSP + ", NamB=" + NamB + ", trongLuong=" + trongLuong + ", moTa=" + moTa + ", soLuong=" + soLuong + ", giaNhap=" + giaNhap + ", giaBan=" + giaBan + '}';
+    }
+
+    public void inThonTin() {
+        System.out.println("SanPham{" + "maSp=" + maSp + ", tenSP=" + tenSP + ", NamB=" + NamB + ", trongLuong=" + trongLuong + ", moTa=" + moTa + ", soLuong=" + soLuong + ", giaNhap=" + giaNhap + ", giaBan=" + giaBan + '}');
+    }
 }
