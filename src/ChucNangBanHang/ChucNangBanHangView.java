@@ -26,6 +26,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         initComponents();
         ArrayList<SanPham> list = quanLyBanHang.getListSanPham();
         loadData(list);
+        System.out.println("");
     }
     
     void loadData(ArrayList<SanPham> list) {
