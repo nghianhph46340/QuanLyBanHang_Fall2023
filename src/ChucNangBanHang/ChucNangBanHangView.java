@@ -27,7 +27,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         ArrayList<SanPham> list = quanLyBanHang.getListSanPham();
         loadData(list);
     }
-
+    
     void loadData(ArrayList<SanPham> list) {
         dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
         dftm.setRowCount(0);
@@ -402,14 +402,13 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         Double donGia = (Double) tblChiTietSanPham.getValueAt(i, 8);
         if (soLuong <= slb && soLuong > 0) {
             Double thanhTien = donGia * soLuong;
-
             GioHang gioHangNew = new GioHang(maSp, tenSp, soLuong, donGia, thanhTien);
 
             ArrayList<GioHang> listGHTV = quanLyBanHang.themSpGioHang(gioHangNew);
 
             loadDataGH(listGHTV);
         } else {
-            JOptionPane.showMessageDialog(this, "Quá số lượng trong kho");
+            JOptionPane.showMessageDialog(this, "Nhập lại số lượng");
         }
 
 
