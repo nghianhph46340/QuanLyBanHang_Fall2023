@@ -21,10 +21,10 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     DefaultTableModel dftm;
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
     ArrayList<GioHang> listGH = quanLyBanHang.getListGioHang();
-    
+
     public ChucNangBanHangView() {
         initComponents();
-        ArrayList<SanPham> list = quanLyBanHang.getListSanPham();     
+        ArrayList<SanPham> list = quanLyBanHang.getListSanPham();
         loadData(list);
     }
 
@@ -391,24 +391,34 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         int i = tblChiTietSanPham.getSelectedRow();
-        String maSp = (String) tblChiTietSanPham.getValueAt(i, 1);
-        String tenSp = (String) tblChiTietSanPham.getValueAt(i, 2);
+        String maSp = tblChiTietSanPham.getValueAt(i, 1).toString();
+        String tenSp = tblChiTietSanPham.getValueAt(i, 2).toString();
+        String sLTB = tblChiTietSanPham.getValueAt(i, 6).toString();
+        Integer slb = Integer.parseInt(sLTB);
+        System.out.println(sLTB);
         String soLuong1 = JOptionPane.showInputDialog("Nhập số lượng cần mua: ");
         Integer soLuong = Integer.parseInt(soLuong1);
         
         Double donGia = (Double) tblChiTietSanPham.getValueAt(i, 8);
-        Double thanhTien = donGia * soLuong;
-        
-        GioHang gioHangNew = new GioHang(maSp, tenSp, soLuong, donGia, thanhTien);
+        if (soLuong <= slb && soLuong > 0) {
+            Double thanhTien = donGia * soLuong;
 
-        ArrayList<GioHang> listGHTV = quanLyBanHang.themSpGioHang(gioHangNew);
+            GioHang gioHangNew = new GioHang(maSp, tenSp, soLuong, donGia, thanhTien);
 
-        loadDataGH(listGHTV);
+            ArrayList<GioHang> listGHTV = quanLyBanHang.themSpGioHang(gioHangNew);
+
+            loadDataGH(listGHTV);
+        } else {
+            JOptionPane.showMessageDialog(this, "Quá số lượng trong kho");
+        }
+
 
     }//GEN-LAST:event_btnThemSanPhamMouseClicked
 
     private void tblChiTietSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChiTietSanPhamMouseClicked
         // TODO add your handling code here:
+        int i = tblChiTietSanPham.getSelectedRow();
+//        System.out.println(tblChiTietSanPham.getValueAt(i, 6));
 
     }//GEN-LAST:event_tblChiTietSanPhamMouseClicked
 
