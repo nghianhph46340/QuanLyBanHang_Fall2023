@@ -410,7 +410,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Nhập lại số lượng");
         }
-
+        System.out.println("");
 
     }//GEN-LAST:event_btnThemSanPhamMouseClicked
 
