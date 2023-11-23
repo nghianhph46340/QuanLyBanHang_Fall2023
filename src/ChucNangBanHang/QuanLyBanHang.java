@@ -16,7 +16,7 @@ public class QuanLyBanHang {
     Scanner sc = new Scanner(System.in);
 
     ArrayList<SanPham> listSanPham = new ArrayList<>();
-    ArrayList<SanPham> listGioHang = new ArrayList<>();
+    ArrayList<GioHang> listGioHang = new ArrayList<>();
 
     public QuanLyBanHang() {
         listSanPham.add(new SanPham("SP01", "Bánh kẹo", "2020", 10.5, "Bánh kẹo hoà bình", 45, 15000.00, 17000.00));
@@ -32,17 +32,19 @@ public class QuanLyBanHang {
         return listSanPham;
     }
 
-    ArrayList<SanPham> themSpGioHang(String maSp) {
-
-        for (SanPham sanPham : listSanPham) {
-            if (sanPham.getMaSp().equals(maSp)) {
-                listGioHang.add(sanPham);
-                return listGioHang;
-            }
-        }
-        return null;
+    ArrayList<GioHang> themSpGioHang(GioHang gioHang) {
+        
+        listGioHang.add(gioHang);
+        return listGioHang;
+//        for (SanPham sanPham : listSanPham) {
+//            if (sanPham.getMaSp().equals(gioHang.getMaSP())) {
+//                listGioHang.add(gioHang);
+//                return listGioHang;
+//            }
+//        }
+//        return null;
     }
-    ArrayList<SanPham> getListGioHang(){
+    ArrayList<GioHang> getListGioHang(){
         return listGioHang;
     }
 

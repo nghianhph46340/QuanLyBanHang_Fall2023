@@ -20,11 +20,12 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     ArrayList<SanPham> list = new ArrayList<>();
     DefaultTableModel dftm;
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
-
+    ArrayList<GioHang> listGH = quanLyBanHang.getListGioHang();
+    
     public ChucNangBanHangView() {
         initComponents();
         ArrayList<SanPham> list = quanLyBanHang.getListSanPham();     
-        loadData(list);   
+        loadData(list);
     }
 
     void loadData(ArrayList<SanPham> list) {
@@ -46,19 +47,18 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         }
     }
 
-    void loadDataGH(ArrayList<SanPham> listGioHang) {
-        DefaultTableModel dftmgh = (DefaultTableModel) tblGioHang.getModel();
+    void loadDataGH(ArrayList<GioHang> listGioHang) {
+        dftm = (DefaultTableModel) tblGioHang.getModel();
         Integer stt = 1;
-        Integer soLuong = 1;
-        dftmgh.setRowCount(0);
-        for (SanPham sanPham : listGioHang) {
-            dftmgh.addRow(new Object[]{
+        dftm.setRowCount(0);
+        for (GioHang gioHang : listGH) {
+            dftm.addRow(new Object[]{
                 stt++,
-                sanPham.getMaSp(),
-                sanPham.getTenSP(),
-                soLuong++,
-                sanPham.getGiaBan(),
-                soLuong * sanPham.getGiaBan()
+                gioHang.getMaSP(),
+                gioHang.getTenSp(),
+                gioHang.getSoLuong(),
+                gioHang.getDonGia(),
+                gioHang.getSoLuong() * gioHang.getDonGia()
             });
         }
     }
@@ -393,20 +393,16 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         int i = tblChiTietSanPham.getSelectedRow();
         String maSp = (String) tblChiTietSanPham.getValueAt(i, 1);
         String tenSp = (String) tblChiTietSanPham.getValueAt(i, 2);
-        Integer soLuong = 1;
+        String soLuong1 = JOptionPane.showInputDialog("Nhập số lượng cần mua: ");
+        Integer soLuong = Integer.parseInt(soLuong1);
+        
         Double donGia = (Double) tblChiTietSanPham.getValueAt(i, 8);
         Double thanhTien = donGia * soLuong;
-        //Tạo đối tượng mới từ dữ liệu sẵn có
-        //GioHang gioHangNew = new GioHang(maSp, tenSp, soLuong, donGia, thanhTien);
+        
+        GioHang gioHangNew = new GioHang(maSp, tenSp, soLuong, donGia, thanhTien);
 
-        //System.out.println(gioHangNew);
-        // Boolean check = quanLyBanHang.themSpGioHang(maSp);
-        //gioHang.add(gioHangNew);
-        ArrayList<SanPham> listGHTV = quanLyBanHang.themSpGioHang(maSp);
-        for (SanPham sanPham : listGHTV) {
-            sanPham.inThonTin();
-            
-        }
+        ArrayList<GioHang> listGHTV = quanLyBanHang.themSpGioHang(gioHangNew);
+
         loadDataGH(listGHTV);
 
     }//GEN-LAST:event_btnThemSanPhamMouseClicked
