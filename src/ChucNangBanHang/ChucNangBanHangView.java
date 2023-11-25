@@ -4,7 +4,9 @@
  */
 package ChucNangBanHang;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,14 +23,16 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     DefaultTableModel dftm;
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
     ArrayList<GioHang> listGH = quanLyBanHang.getListGioHang();
-
+    
+    LocalDate date = LocalDate.now();
     public ChucNangBanHangView() {
         initComponents();
         ArrayList<SanPham> list = quanLyBanHang.getListSanPham();
         loadData(list);
-        System.out.println("");
+        ArrayList<HoaDon> listHD = quanLyBanHang.listHoaDonFake();
+        loadDataHD(listHD);
     }
-    
+
     void loadData(ArrayList<SanPham> list) {
         dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
         dftm.setRowCount(0);
@@ -44,6 +48,22 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                 sanPham.getSoLuong(),
                 sanPham.getGiaNhap(),
                 sanPham.getGiaBan()
+            });
+        }
+    }
+
+    void loadDataHD(ArrayList<HoaDon> list) {
+        dftm = (DefaultTableModel) tblHoaDon.getModel();
+        dftm.setRowCount(0);
+        Integer stt = 1;
+        
+        for (HoaDon hoaDon : list) {
+            dftm.addRow(new Object[]{
+                stt++,
+                hoaDon.getMaHoaDon(),
+                hoaDon.getNgayTao(),
+                hoaDon.getTenNV(),
+                hoaDon.getTinhTrang()
             });
         }
     }
@@ -64,6 +84,17 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         }
     }
 
+    void setFormHoaDon(boolean hd) {
+        
+        txtMaHD.setEnabled(hd);
+        txtNgayTao.setEnabled(hd);
+        txtTenNV.setEnabled(hd);
+        txtTienKhachDua.setEnabled(hd);
+        txtTienThua.setEnabled(hd);
+        txtTongTien.setEnabled(hd);
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,8 +139,18 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         btnThemSanPham = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         btnTaoHoaDon.setText("Tạo hoá đơn");
+        btnTaoHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnTaoHoaDonMouseClicked(evt);
+            }
+        });
 
         buttonGroup1.add(rdDaThanhToan);
         rdDaThanhToan.setText("Đã thanh toán");
@@ -134,6 +175,11 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                 "STT", "Mã HĐ", "Ngày tạo", "Tên NV", "Tình trạng"
             }
         ));
+        tblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblHoaDonMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblHoaDon);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -373,7 +419,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
+                        .addGap(38, 38, 38)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(layout.createSequentialGroup()
@@ -399,7 +445,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         System.out.println(sLTB);
         String soLuong1 = JOptionPane.showInputDialog("Nhập số lượng cần mua: ");
         Integer soLuong = Integer.parseInt(soLuong1);
-        
+
         Double donGia = (Double) tblChiTietSanPham.getValueAt(i, 8);
         if (soLuong <= slb && soLuong > 0) {
             Double thanhTien = donGia * soLuong;
@@ -418,9 +464,37 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     private void tblChiTietSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChiTietSanPhamMouseClicked
         // TODO add your handling code here:
         int i = tblChiTietSanPham.getSelectedRow();
+        btnThemSanPham.setEnabled(true);
 //        System.out.println(tblChiTietSanPham.getValueAt(i, 6));
 
     }//GEN-LAST:event_tblChiTietSanPhamMouseClicked
+
+    private void btnTaoHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTaoHoaDonMouseClicked
+        // TODO add your handling code here:
+        
+        int i = quanLyBanHang.getListHoaDon().size();
+        i++;
+        //Integer maHD = (Integer) tblHoaDon.getValueAt(0,0 );
+        HoaDon hoaDon = new HoaDon("HD0"+i, date+"", "", "Chưa thanh toán");
+        quanLyBanHang.getListHoaDon().add(hoaDon);
+        loadDataHD(quanLyBanHang.getListHoaDon());
+        
+        
+    }//GEN-LAST:event_btnTaoHoaDonMouseClicked
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        tblGioHang.setEnabled(false);
+        setFormHoaDon(false);
+        btnThanhToan.setEnabled(false);
+        btnThemSanPham.setEnabled(false);
+    }//GEN-LAST:event_formWindowActivated
+
+    private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
+        // TODO add your handling code here:
+        setFormHoaDon(true);
+        btnThemSanPham.setEnabled(true);
+    }//GEN-LAST:event_tblHoaDonMouseClicked
 
     /**
      * @param args the command line arguments

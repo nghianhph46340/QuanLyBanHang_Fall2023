@@ -17,6 +17,7 @@ public class QuanLyBanHang {
 
     ArrayList<SanPham> listSanPham = new ArrayList<>();
     ArrayList<GioHang> listGioHang = new ArrayList<>();
+    ArrayList<HoaDon> listHoaDon = new ArrayList<>();
 
     public QuanLyBanHang() {
         listSanPham.add(new SanPham("SP01", "Bánh kẹo", "2020", 10.5, "Bánh kẹo hoà bình", 45, 15000.00, 17000.00));
@@ -26,10 +27,17 @@ public class QuanLyBanHang {
         listSanPham.add(new SanPham("SP05", "Phở bò", "2020", 100.5, "Phở bò Hà Lội", 79, 39000.00, 45000.00));
 
     }
+    public ArrayList listHoaDonFake(){
+       listHoaDon.add(new HoaDon("HD01", "2023/4/5", "Nguyễn Hữu Nghĩa", "Chưa thanh toán"));
+       return listHoaDon;
+    }
 
     ArrayList<SanPham> getListSanPham() {
 
         return listSanPham;
+    }
+    ArrayList<HoaDon> getListHoaDon(){
+        return listHoaDon;
     }
 
     ArrayList<GioHang> themSpGioHang(GioHang gioHang) {
