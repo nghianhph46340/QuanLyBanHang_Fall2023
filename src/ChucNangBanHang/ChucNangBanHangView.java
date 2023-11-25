@@ -22,16 +22,17 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     ArrayList<SanPham> listSP = new ArrayList<>();
     DefaultTableModel dftm;
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
-    ArrayList<GioHang> listGH = quanLyBanHang.getListGioHang();
+    ArrayList<GioHang> listGH = quanLyBanHang.getListGH();
     
     LocalDate date = LocalDate.now();
     public ChucNangBanHangView() {
         initComponents();
         dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
-        loadData(listSP);
+        loadDataSP(listSP);
+        loadDataGH(listGH);
     }
 
-    void loadData(ArrayList<SanPham> list) {
+    void loadDataSP(ArrayList<SanPham> list) {
         dftm.setRowCount(0);
         Integer stt = 1;
         for (SanPham sanPham : quanLyBanHang.getListSP()) {
@@ -54,7 +55,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         dftm.setRowCount(0);
         Integer stt = 1;
         
-        for (HoaDon hoaDon : list) {
+        for (HoaDon hoaDon : quanLyBanHang.getListHoaDon()) {
             dftm.addRow(new Object[]{
                 stt++,
                 hoaDon.getMaHoaDon(),
@@ -69,7 +70,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         dftm = (DefaultTableModel) tblGioHang.getModel();
         Integer stt = 1;
         dftm.setRowCount(0);
-        for (GioHang gioHang : listGH) {
+        for (GioHang gioHang : quanLyBanHang.getListGH()) {
             dftm.addRow(new Object[]{
                 stt++,
                 gioHang.getMaSP(),
@@ -441,9 +442,9 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             Double thanhTien = donGia * soLuong;
             GioHang gioHangNew = new GioHang(maSp, tenSp, soLuong, donGia, thanhTien);
 
-            ArrayList<GioHang> listGHTV = quanLyBanHang.themSpGioHang(gioHangNew);
+            quanLyBanHang.addSanPham(gioHangNew);
 
-            loadDataGH(listGHTV);
+            loadDataGH(listGH);
         } else {
             JOptionPane.showMessageDialog(this, "Nhập lại số lượng");
         }
@@ -453,16 +454,14 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     private void tblChiTietSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChiTietSanPhamMouseClicked
         // TODO add your handling code here:
         int i = tblChiTietSanPham.getSelectedRow();
-        btnThemSanPham.setEnabled(true);
+//        btnThemSanPham.setEnabled(true);
 
     }//GEN-LAST:event_tblChiTietSanPhamMouseClicked
 
     private void btnTaoHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTaoHoaDonMouseClicked
         // TODO add your handling code here:
-        
         int i = quanLyBanHang.getListHoaDon().size();
         i++;
-        //Integer maHD = (Integer) tblHoaDon.getValueAt(0,0 );
         HoaDon hoaDon = new HoaDon("HD0"+i, date+"", "", "Chưa thanh toán");
         quanLyBanHang.getListHoaDon().add(hoaDon);
         loadDataHD(quanLyBanHang.getListHoaDon());
@@ -472,16 +471,19 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        tblGioHang.setEnabled(false);
-        setFormHoaDon(false);
-        btnThanhToan.setEnabled(false);
-        btnThemSanPham.setEnabled(false);
+//        tblGioHang.setEnabled(false);
+//        setFormHoaDon(false);
+//        btnThanhToan.setEnabled(false);
+//        btnThemSanPham.setEnabled(false);
+//        tblChiTietSanPham.setEnabled(false);
     }//GEN-LAST:event_formWindowActivated
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
         // TODO add your handling code here:
         setFormHoaDon(true);
+        tblGioHang.setEnabled(true);
         btnThemSanPham.setEnabled(true);
+        tblChiTietSanPham.setEnabled(true);
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     /**
