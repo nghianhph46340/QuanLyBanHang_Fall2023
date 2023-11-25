@@ -44,21 +44,26 @@ public class QuanLyBanHang {
         }
         return listSanPham;
     }
-    
-//    public QuanLyBanHang() {
-//        listSanPham.add(new SanPham("SP01", "Bánh kẹo", "2020", 10.5, "Bánh kẹo hoà bình", 45, 15000.00, 17000.00));
-//        listSanPham.add(new SanPham("SP02", "Xúc xích", "2020", 300.5, "Xúc xích thượng hạng", 100, 10000.00, 15000.00));
-//        listSanPham.add(new SanPham("SP03", "Bánh bao", "2020", 20.5, "Bánh bao thượng hạng", 200, 40000.00, 45000.00));
-//        listSanPham.add(new SanPham("SP04", "Mì tôm", "2020", 30.5, "Mì tôm thượng hạng", 150, 3000.00, 5000.00));
-//        listSanPham.add(new SanPham("SP05", "Phở bò", "2020", 100.5, "Phở bò Hà Lội", 79, 39000.00, 45000.00));
-//
-//    }
-    public ArrayList listHoaDonFake(){
-       listHoaDon.add(new HoaDon("HD01", "2023/4/5", "Nguyễn Hữu Nghĩa", "Chưa thanh toán"));
-       return listHoaDon;
-    }
 
     ArrayList<HoaDon> getListHoaDon(){
+        listHoaDon.clear();
+        try {
+            String sql = "select ma_hoa_don,ngay_tao,ho_ten,trang_thai from HoaDon" + "\n" +
+                        "join NhanVien on NhanVien.id = HoaDon.id_nhan_vien";
+            Connection conn = DBConnect.getConnection();
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {                
+                HoaDon hd = new HoaDon();
+                hd.setMaHoaDon(rs.getString(1));
+                hd.setNgayTao(rs.getString(2));
+                hd.setTenNV(rs.getString(3));
+                hd.setTinhTrang(rs.getString(4));
+                listHoaDon.add(hd);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return listHoaDon;
     }
 
@@ -66,40 +71,9 @@ public class QuanLyBanHang {
         
         listGioHang.add(gioHang);
         return listGioHang;
-//        for (SanPham sanPham : listSanPham) {
-//            if (sanPham.getMaSp().equals(gioHang.getMaSP())) {
-//                listGioHang.add(gioHang);
-//                return listGioHang;
-//            }
-//        }
-//        return null;
     }
     ArrayList<GioHang> getListGioHang(){
         return listGioHang;
     }
 
-//    ArrayList<GioHang> listTraGioHang(ArrayList<SanPham> listSp) {
-//        ArrayList<GioHang> listSPGioHang = new ArrayList<>();
-//        GioHang gioHang = new GioHang();
-////        for (int i = 0; i < listSp.size(); i++) {
-////            String maSP = listSp.get(i).getMaSp();
-////            String tenSP = listSp.get(i).getTenSP();
-////            Integer soLuong = listSp.get(i).getSoLuong();
-////            Double donGia = listSp.get(i).getGiaBan();
-////            Double thanhTien = donGia * soLuong;
-////        }
-////        String maSP = listSp.get(0).getMaSp();
-////        gioHang.setMaSP(maSP);
-////        String tenSP = listSp.get(0).getTenSP();
-////        gioHang.setTenSp(tenSP);
-////        Integer soLuong = listSp.get(0).getSoLuong();
-////        gioHang.setSoLuong(soLuong);
-////        Double donGia = listSp.get(0).getGiaBan();
-////        gioHang.setDonGia(donGia);
-////        Double thanhTien = donGia * soLuong;
-////        gioHang.setThanhTien(thanhTien);
-////        listSPGioHang.add(gioHang);
-//
-//        return listSPGioHang;
-//    }
 }

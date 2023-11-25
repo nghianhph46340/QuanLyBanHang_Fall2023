@@ -29,8 +29,6 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         initComponents();
         dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
         loadData(listSP);
-        ArrayList<HoaDon> listHD = quanLyBanHang.listHoaDonFake();
-        loadDataHD(listHD);
     }
 
     void loadData(ArrayList<SanPham> list) {
@@ -165,10 +163,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
         tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "STT", "Mã HĐ", "Ngày tạo", "Tên NV", "Tình trạng"
@@ -263,10 +258,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
         tblGioHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "STT", "Mã SP", "Tên Sp", "Số lượng", "Đơn giá", "Thành tiền"
@@ -441,7 +433,6 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         String tenSp = tblChiTietSanPham.getValueAt(i, 2).toString();
         String sLTB = tblChiTietSanPham.getValueAt(i, 6).toString();
         Integer slb = Integer.parseInt(sLTB);
-        System.out.println(sLTB);
         String soLuong1 = JOptionPane.showInputDialog("Nhập số lượng cần mua: ");
         Integer soLuong = Integer.parseInt(soLuong1);
 
@@ -456,7 +447,6 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Nhập lại số lượng");
         }
-        System.out.println("");
 
     }//GEN-LAST:event_btnThemSanPhamMouseClicked
 
@@ -464,7 +454,6 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         // TODO add your handling code here:
         int i = tblChiTietSanPham.getSelectedRow();
         btnThemSanPham.setEnabled(true);
-//        System.out.println(tblChiTietSanPham.getValueAt(i, 6));
 
     }//GEN-LAST:event_tblChiTietSanPhamMouseClicked
 
