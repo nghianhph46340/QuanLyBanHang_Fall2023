@@ -19,7 +19,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     /**
      * Creates new form ChucNangBanHangView
      */
-    ArrayList<SanPham> list = new ArrayList<>();
+    ArrayList<SanPham> listSP = new ArrayList<>();
     DefaultTableModel dftm;
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
     ArrayList<GioHang> listGH = quanLyBanHang.getListGioHang();
@@ -27,17 +27,16 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     LocalDate date = LocalDate.now();
     public ChucNangBanHangView() {
         initComponents();
-        ArrayList<SanPham> list = quanLyBanHang.getListSanPham();
-        loadData(list);
+        dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
+        loadData(listSP);
         ArrayList<HoaDon> listHD = quanLyBanHang.listHoaDonFake();
         loadDataHD(listHD);
     }
 
     void loadData(ArrayList<SanPham> list) {
-        dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
         dftm.setRowCount(0);
         Integer stt = 1;
-        for (SanPham sanPham : list) {
+        for (SanPham sanPham : quanLyBanHang.getListSP()) {
             dftm.addRow(new Object[]{
                 stt++,
                 sanPham.getMaSp(),
