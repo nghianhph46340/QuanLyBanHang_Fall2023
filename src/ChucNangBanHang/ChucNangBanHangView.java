@@ -23,13 +23,14 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     DefaultTableModel dftm;
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
     ArrayList<GioHang> listGH = quanLyBanHang.getListGH();
-    
+
     LocalDate date = LocalDate.now();
+
     public ChucNangBanHangView() {
         initComponents();
         dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
         loadDataSP(listSP);
-        loadDataGH(listGH);
+        loadDataHD(quanLyBanHang.getListHoaDon());
     }
 
     void loadDataSP(ArrayList<SanPham> list) {
@@ -54,7 +55,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         dftm = (DefaultTableModel) tblHoaDon.getModel();
         dftm.setRowCount(0);
         Integer stt = 1;
-        
+
         for (HoaDon hoaDon : quanLyBanHang.getListHoaDon()) {
             dftm.addRow(new Object[]{
                 stt++,
@@ -66,33 +67,37 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         }
     }
 
-    void loadDataGH(ArrayList<GioHang> listGioHang) {
+    void loadDataGH(String maHD) {
         dftm = (DefaultTableModel) tblGioHang.getModel();
         Integer stt = 1;
         dftm.setRowCount(0);
+
         for (GioHang gioHang : quanLyBanHang.getListGH()) {
-            dftm.addRow(new Object[]{
-                stt++,
-                gioHang.getMaSP(),
-                gioHang.getTenSp(),
-                gioHang.getSoLuong(),
-                gioHang.getDonGia(),
-                gioHang.getSoLuong() * gioHang.getDonGia()
-            });
+            if (gioHang.getMaHD().equals(maHD)) {
+                dftm.addRow(new Object[]{
+                    stt++,
+                    gioHang.getMaSP(),
+                    gioHang.getTenSp(),
+                    gioHang.getSoLuong(),
+                    gioHang.getDonGia(),
+                    gioHang.getSoLuong() * gioHang.getDonGia()
+                });
+            }
+
         }
     }
 
     void setFormHoaDon(boolean hd) {
-        
+
         txtMaHD.setEnabled(hd);
         txtNgayTao.setEnabled(hd);
         txtTenNV.setEnabled(hd);
         txtTienKhachDua.setEnabled(hd);
         txtTienThua.setEnabled(hd);
         txtTongTien.setEnabled(hd);
-        
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -428,26 +433,33 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
     private void btnThemSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemSanPhamMouseClicked
         // TODO add your handling code here:
+        int row = tblHoaDon.getSelectedRow();
+        if (row >= 0) {
+            String maHD = tblHoaDon.getValueAt(row, 1).toString();
+            int i = tblChiTietSanPham.getSelectedRow();
+            if (i >= 0) {
+                String maSp = tblChiTietSanPham.getValueAt(i, 1).toString();
+                String tenSp = tblChiTietSanPham.getValueAt(i, 2).toString();
+                String sLTB = tblChiTietSanPham.getValueAt(i, 6).toString();
+                Integer slb = Integer.parseInt(sLTB);
+                String soLuong1 = JOptionPane.showInputDialog("Nhập số lượng cần mua: ");
+                Integer soLuong = Integer.parseInt(soLuong1);
 
-        int i = tblChiTietSanPham.getSelectedRow();
-        String maSp = tblChiTietSanPham.getValueAt(i, 1).toString();
-        String tenSp = tblChiTietSanPham.getValueAt(i, 2).toString();
-        String sLTB = tblChiTietSanPham.getValueAt(i, 6).toString();
-        Integer slb = Integer.parseInt(sLTB);
-        String soLuong1 = JOptionPane.showInputDialog("Nhập số lượng cần mua: ");
-        Integer soLuong = Integer.parseInt(soLuong1);
+                Double donGia = (Double) tblChiTietSanPham.getValueAt(i, 8);
+                if (soLuong <= slb && soLuong > 0) {
+                    Double thanhTien = donGia * soLuong;
+                    GioHang gioHangNew = new GioHang(maHD, maSp, tenSp, soLuong, donGia, thanhTien);
 
-        Double donGia = (Double) tblChiTietSanPham.getValueAt(i, 8);
-        if (soLuong <= slb && soLuong > 0) {
-            Double thanhTien = donGia * soLuong;
-            GioHang gioHangNew = new GioHang(maSp, tenSp, soLuong, donGia, thanhTien);
+                    quanLyBanHang.addSanPham(gioHangNew);
 
-            quanLyBanHang.addSanPham(gioHangNew);
+                    loadDataGH(maHD);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Nhập lại số lượng");
+                }
+            }
 
-            loadDataGH(listGH);
-        } else {
-            JOptionPane.showMessageDialog(this, "Nhập lại số lượng");
         }
+
 
     }//GEN-LAST:event_btnThemSanPhamMouseClicked
 
@@ -462,20 +474,20 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         // TODO add your handling code here:
         int i = quanLyBanHang.getListHoaDon().size();
         i++;
-        HoaDon hoaDon = new HoaDon("HD0"+i, date+"", "", "Chưa thanh toán");
-        quanLyBanHang.getListHoaDon().add(hoaDon);
+        HoaDon hoaDon = new HoaDon("HD0" + i, date + "", "", "Chưa thanh toán");
+        quanLyBanHang.addHoaDon(hoaDon);
         loadDataHD(quanLyBanHang.getListHoaDon());
-        
-        
+
+
     }//GEN-LAST:event_btnTaoHoaDonMouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-//        tblGioHang.setEnabled(false);
-//        setFormHoaDon(false);
-//        btnThanhToan.setEnabled(false);
-//        btnThemSanPham.setEnabled(false);
-//        tblChiTietSanPham.setEnabled(false);
+        tblGioHang.setEnabled(false);
+        setFormHoaDon(false);
+        btnThanhToan.setEnabled(false);
+        btnThemSanPham.setEnabled(false);
+        tblChiTietSanPham.setEnabled(false);
     }//GEN-LAST:event_formWindowActivated
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
@@ -484,6 +496,15 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         tblGioHang.setEnabled(true);
         btnThemSanPham.setEnabled(true);
         tblChiTietSanPham.setEnabled(true);
+        int selectedRow = tblHoaDon.getSelectedRow();
+        if (selectedRow >= 0) {
+            HoaDon hd = new HoaDon();
+            String maHoaDon = tblHoaDon.getValueAt(selectedRow, 0).toString();
+            hd.setMaHoaDon(maHoaDon);
+            if (quanLyBanHang.getListGH().size() > 0) {
+                loadDataGH(maHoaDon);
+            }
+        }
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     /**

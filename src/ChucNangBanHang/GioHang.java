@@ -9,6 +9,7 @@ package ChucNangBanHang;
  * @author NGHIAPC
  */
 public class GioHang {
+    private String maHD;
     private String maSP;
     private String tenSp;
     private Integer soLuong;
@@ -18,12 +19,21 @@ public class GioHang {
     public GioHang() {
     }
 
-    public GioHang(String maSP, String tenSp, Integer soLuong, Double donGia, Double thanhTien) {
+    public GioHang(String maHD, String maSP, String tenSp, Integer soLuong, Double donGia, Double thanhTien) {
+        this.maHD = maHD;
         this.maSP = maSP;
         this.tenSp = tenSp;
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.thanhTien = thanhTien;
+    }
+
+    public String getMaHD() {
+        return maHD;
+    }
+
+    public void setMaHD(String maHD) {
+        this.maHD = maHD;
     }
 
     public String getMaSP() {
@@ -66,9 +76,6 @@ public class GioHang {
         this.thanhTien = thanhTien;
     }
 
-    @Override
-    public String toString() {
-        return "GioHang{" + "maSP=" + maSP + ", tenSp=" + tenSp + ", soLuong=" + soLuong + ", donGia=" + donGia + ", thanhTien=" + thanhTien + '}';
-    }
+    
     
 }
