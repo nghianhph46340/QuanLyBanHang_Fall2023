@@ -22,7 +22,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     ArrayList<SanPham> listSP = new ArrayList<>();
     DefaultTableModel dftm;
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
-    ArrayList<GioHang> listGH = quanLyBanHang.getListGH();
+    ArrayList<GioHang> listGH = new ArrayList<>();
 
     LocalDate date = LocalDate.now();
 
@@ -72,15 +72,16 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         Integer stt = 1;
         dftm.setRowCount(0);
 
-        for (GioHang gioHang : quanLyBanHang.getListGH()) {
-            if (gioHang.getMaHD().equals(maHD)) {
+        for (GioHang gioHang : quanLyBanHang.getListGH(maHD)) {
+            
+            if (gioHang != null && gioHang.getMaHD() != null && !gioHang.getMaHD().equals(maHD)) {
                 dftm.addRow(new Object[]{
                     stt++,
                     gioHang.getMaSP(),
                     gioHang.getTenSp(),
                     gioHang.getSoLuong(),
                     gioHang.getDonGia(),
-                    gioHang.getSoLuong() * gioHang.getDonGia()
+                    gioHang.getThanhTien()
                 });
             }
 
@@ -499,11 +500,10 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         int selectedRow = tblHoaDon.getSelectedRow();
         if (selectedRow >= 0) {
             HoaDon hd = new HoaDon();
-            String maHoaDon = tblHoaDon.getValueAt(selectedRow, 0).toString();
+            String maHoaDon = tblHoaDon.getValueAt(selectedRow, 1).toString();
             hd.setMaHoaDon(maHoaDon);
-            if (quanLyBanHang.getListGH().size() > 0) {
-                loadDataGH(maHoaDon);
-            }
+            loadDataGH(maHoaDon);
+
         }
     }//GEN-LAST:event_tblHoaDonMouseClicked
 

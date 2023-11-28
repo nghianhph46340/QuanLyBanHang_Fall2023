@@ -66,20 +66,22 @@ public class QuanLyBanHang {
         return listHoaDon;
     }
 
-    public ArrayList<GioHang> getListGH() {
+    public ArrayList<GioHang> getListGH(String maHD) {
         listGioHang.clear();
         try {
-            String sql = "SELECT ma_san_pham, ten_san_pham, so_luong, don_gia, thanh_tien FROM GioHang";
+            String sql = "select ma_san_pham,ten_san_pham,so_luong,don_gia,thanh_tien from GioHang where ma_hoa_don = ?";
             Connection conn = DBConnect.getConnection();
             Statement stm = conn.createStatement();
+            PreparedStatement ptm = conn.prepareStatement(sql);
+            ptm.setString(1, maHD);
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 GioHang gh = new GioHang();
-                gh.setMaSP(rs.getString("ma_san_pham"));
-                gh.setTenSp(rs.getString("ten_san_pham"));
-                gh.setSoLuong(rs.getInt("so_luong"));
-                gh.setDonGia(rs.getDouble("don_gia"));
-                gh.setThanhTien(rs.getDouble("thanh_tien"));
+                gh.setMaSP(rs.getString(1));
+                gh.setTenSp(rs.getString(2));
+                gh.setSoLuong(rs.getInt(3));
+                gh.setDonGia(rs.getDouble(4));
+                gh.setThanhTien(rs.getDouble(5));
                 listGioHang.add(gh);
             }
         } catch (Exception e) {
