@@ -23,7 +23,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     DefaultTableModel dftm;
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
     ArrayList<GioHang> listGH = new ArrayList<>();
-
+    Integer stt = 1;
     LocalDate date = LocalDate.now();
 
     public ChucNangBanHangView() {
@@ -35,13 +35,13 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
     void loadDataSP(ArrayList<SanPham> list) {
         dftm.setRowCount(0);
-        Integer stt = 1;
+        
         for (SanPham sanPham : quanLyBanHang.getListSP()) {
             dftm.addRow(new Object[]{
                 stt++,
                 sanPham.getMaSp(),
                 sanPham.getTenSP(),
-                sanPham.getNamB(),
+                sanPham.getNgayTao(),
                 sanPham.getTrongLuong(),
                 sanPham.getMoTa(),
                 sanPham.getSoLuong(),
@@ -139,7 +139,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblChiTietSanPham = new javax.swing.JTable();
-        jTextField7 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
         btnThemSanPham = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -317,6 +317,12 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tblChiTietSanPham);
 
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -325,7 +331,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
@@ -335,7 +341,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(18, Short.MAX_VALUE)
-                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
@@ -507,6 +513,26 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        // TODO add your handling code here:
+        String keyword = txtSearch.getText();
+        dftm.setRowCount(0);
+        for (SanPham sanPham: quanLyBanHang.search(keyword)) {
+            dftm.addRow(new Object[]{
+                stt++,
+                sanPham.getMaSp(),
+                sanPham.getTenSP(),
+                sanPham.getNgayTao(),
+                sanPham.getTrongLuong(),
+                sanPham.getMoTa(),
+                sanPham.getSoLuong(),
+                sanPham.getGiaNhap(),
+                sanPham.getGiaBan()
+
+            });
+        }
+    }//GEN-LAST:event_txtSearchKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -562,7 +588,6 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JRadioButton rdChoThanhToan;
     private javax.swing.JRadioButton rdDaHuy;
     private javax.swing.JRadioButton rdDaThanhToan;
@@ -572,6 +597,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     private javax.swing.JTable tblHoaDon;
     private javax.swing.JTextField txtMaHD;
     private javax.swing.JTextField txtNgayTao;
+    private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtTenNV;
     private javax.swing.JTextField txtTienKhachDua;
     private javax.swing.JTextField txtTienThua;

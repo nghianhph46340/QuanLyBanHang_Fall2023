@@ -7,6 +7,7 @@ package ChucNangBanHang;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.sql.*;
+import java.util.List;
 
 /**
  *
@@ -31,7 +32,7 @@ public class QuanLyBanHang {
                 SanPham sp = new SanPham();
                 sp.setMaSp(rs.getString("ma_san_pham"));
                 sp.setTenSP(rs.getString("ten_san_pham"));
-                sp.setNamB(rs.getString("ngay_tao"));
+                sp.setNgayTao(rs.getString("ngay_tao"));
                 sp.setTrongLuong(rs.getDouble("trong_luong"));
                 sp.setMoTa(rs.getString("mo_ta"));
                 sp.setSoLuong(rs.getInt("so_luong_ton"));
@@ -69,56 +70,56 @@ public class QuanLyBanHang {
     public ArrayList<GioHang> getListGH(String maHD) {
         listGioHang.clear();
         try {
-        String sql = "select ma_san_pham,ten_san_pham,so_luong,don_gia,thanh_tien from GioHang where ma_hoa_don = ?";
-        Connection conn = DBConnect.getConnection();
-        PreparedStatement ptm = conn.prepareStatement(sql);
-        ptm.setString(1, maHD);
-        ResultSet rs = ptm.executeQuery();
+            String sql = "select ma_san_pham,ten_san_pham,so_luong,don_gia,thanh_tien from GioHang where ma_hoa_don = ?";
+            Connection conn = DBConnect.getConnection();
+            PreparedStatement ptm = conn.prepareStatement(sql);
+            ptm.setString(1, maHD);
+            ResultSet rs = ptm.executeQuery();
 
-        try {
-            while (rs.next()) {
-                GioHang gh = new GioHang();
-                gh.setMaSP(rs.getString(1));
-                gh.setTenSp(rs.getString(2));
-                gh.setSoLuong(rs.getInt(3));
-                gh.setDonGia(rs.getDouble(4));
-                gh.setThanhTien(rs.getDouble(5));
+            try {
+                while (rs.next()) {
+                    GioHang gh = new GioHang();
+                    gh.setMaSP(rs.getString(1));
+                    gh.setTenSp(rs.getString(2));
+                    gh.setSoLuong(rs.getInt(3));
+                    gh.setDonGia(rs.getDouble(4));
+                    gh.setThanhTien(rs.getDouble(5));
 
-                listGioHang.add(gh);
+                    listGioHang.add(gh);
+                }
+            } catch (Exception e) {
+                System.out.println(1);
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    if (ptm != null) {
+                        ptm.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
-            System.out.println(1);
+            System.out.println(2);
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (ptm != null) {
-                    ptm.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-    } catch (Exception e) {
-        System.out.println(2);
-        e.printStackTrace();
-    }
-    return listGioHang;
+        return listGioHang;
     }
 
     public void addSanPham(GioHang gh) {
@@ -153,6 +154,37 @@ public class QuanLyBanHang {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<SanPham> search(String keyWord) {
+        String sql = "select * from SanPham where ma_san_pham like ?";
+        listSanPham.clear();
+        try {
+            try {
+                Connection conn = DBConnect.getConnection();
+                PreparedStatement stm = conn.prepareStatement(sql);
+                stm.setString(1, "%" + keyWord + "%");
+                ResultSet rs = stm.executeQuery();
+                while (rs.next()) {
+                    SanPham sp = new SanPham();
+                    sp.setMaSp(rs.getString(1));
+                    sp.setTenSP(rs.getString(2));
+                    sp.setNgayTao(rs.getString(3));
+                    sp.setTrongLuong(Double.parseDouble(rs.getString(4)));
+                    sp.setMoTa(rs.getString(5));
+                    sp.setSoLuong(Integer.parseInt(rs.getString(5)));
+                    sp.setGiaNhap(Double.parseDouble(rs.getString(6)));
+                    sp.setGiaBan(Double.parseDouble(rs.getString(7)));
+                    listSanPham.add(sp);
+                }
+            } catch (NumberFormatException e) {
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listSanPham;
     }
 
 }

@@ -4,6 +4,8 @@
  */
 package ChucNangBanHang;
 
+import java.util.Date;
+
 /**
  *
  * @author NGHIAPC
@@ -12,7 +14,7 @@ public class SanPham {
 
     private String maSp;
     private String tenSP;
-    private String NamB;
+    private String ngayTao;
     private Double trongLuong;
     private String moTa;
     private Integer soLuong;
@@ -22,10 +24,10 @@ public class SanPham {
     public SanPham() {
     }
 
-    public SanPham(String maSp, String tenSP, String NamB, Double trongLuong, String moTa, Integer soLuong, Double giaNhap, Double giaBan) {
+    public SanPham(String maSp, String tenSP, String ngayTao, Double trongLuong, String moTa, Integer soLuong, Double giaNhap, Double giaBan) {
         this.maSp = maSp;
         this.tenSP = tenSP;
-        this.NamB = NamB;
+        this.ngayTao = ngayTao;
         this.trongLuong = trongLuong;
         this.moTa = moTa;
         this.soLuong = soLuong;
@@ -49,12 +51,12 @@ public class SanPham {
         this.tenSP = tenSP;
     }
 
-    public String getNamB() {
-        return NamB;
+    public String getNgayTao() {
+        return ngayTao;
     }
 
-    public void setNamB(String NamB) {
-        this.NamB = NamB;
+    public void setNgayTao(String ngayTao) {
+        this.ngayTao = ngayTao;
     }
 
     public Double getTrongLuong() {
@@ -99,10 +101,10 @@ public class SanPham {
 
     @Override
     public String toString() {
-        return "SanPham{" + "maSp=" + maSp + ", tenSP=" + tenSP + ", NamB=" + NamB + ", trongLuong=" + trongLuong + ", moTa=" + moTa + ", soLuong=" + soLuong + ", giaNhap=" + giaNhap + ", giaBan=" + giaBan + '}';
+        return "SanPham{" + "maSp=" + maSp + ", tenSP=" + tenSP + ", ngayTao=" + ngayTao+ ", trongLuong=" + trongLuong + ", moTa=" + moTa + ", soLuong=" + soLuong + ", giaNhap=" + giaNhap + ", giaBan=" + giaBan + '}';
     }
 
     public void inThonTin() {
-        System.out.println("SanPham{" + "maSp=" + maSp + ", tenSP=" + tenSP + ", NamB=" + NamB + ", trongLuong=" + trongLuong + ", moTa=" + moTa + ", soLuong=" + soLuong + ", giaNhap=" + giaNhap + ", giaBan=" + giaBan + '}');
+        System.out.println("SanPham{" + "maSp=" + maSp + ", tenSP=" + tenSP + ", ngayTao=" + ngayTao + ", trongLuong=" + trongLuong + ", moTa=" + moTa + ", soLuong=" + soLuong + ", giaNhap=" + giaNhap + ", giaBan=" + giaBan + '}');
     }
 }
