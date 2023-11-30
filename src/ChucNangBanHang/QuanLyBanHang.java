@@ -119,23 +119,12 @@ public class QuanLyBanHang {
                     e.printStackTrace();
                 }
             }
-            System.out.println(listGioHang.size());
         } catch (Exception e) {
-<<<<<<< HEAD
-=======
-            System.out.println(2);
->>>>>>> c9082483002325b8e0223aab26ec76ec8a2cb443
             e.printStackTrace();
         }
-<<<<<<< HEAD
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return listGioHang;
-=======
         return listGioHang;
->>>>>>> c9082483002325b8e0223aab26ec76ec8a2cb443
     }
+    
 
     public void addSanPham(GioHang gh) {
         String sql = "insert into GioHang (ma_hoa_don,ma_san_pham,ten_san_pham,so_luong,don_gia,thanh_tien) values (?,?,?,?,?,?)";

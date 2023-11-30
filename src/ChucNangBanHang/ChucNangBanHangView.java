@@ -73,7 +73,6 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         Integer stt = 1;
         dftm.setRowCount(0);
         for (GioHang gioHang : quanLyBanHang.getListGH(maHD)) {
-<<<<<<< HEAD
             dftm.addRow(new Object[]{
                 stt++,
                 gioHang.getMaSP(),
@@ -82,19 +81,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                 gioHang.getDonGia(),
                 gioHang.getThanhTien()
             });
-=======
-            if (gioHang != null && gioHang.getMaHD() != null && !gioHang.getMaHD().equals(maHD)) {
-                dftm.addRow(new Object[]{
-                    stt++,
-                    gioHang.getMaSP(),
-                    gioHang.getTenSp(),
-                    gioHang.getSoLuong(),
-                    gioHang.getDonGia(),
-                    gioHang.getThanhTien()
-                });
-            }
->>>>>>> c9082483002325b8e0223aab26ec76ec8a2cb443
-
+           
         }
     }
 
