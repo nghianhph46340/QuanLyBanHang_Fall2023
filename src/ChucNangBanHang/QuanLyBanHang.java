@@ -86,8 +86,8 @@ public class QuanLyBanHang {
 
                 listGioHang.add(gh);
             }
+            System.out.println(listGioHang.size());
         } catch (Exception e) {
-            System.out.println(1);
             e.printStackTrace();
         } finally {
             try {
@@ -115,7 +115,6 @@ public class QuanLyBanHang {
             }
         }
     } catch (Exception e) {
-        System.out.println(2);
         e.printStackTrace();
     }
     return listGioHang;

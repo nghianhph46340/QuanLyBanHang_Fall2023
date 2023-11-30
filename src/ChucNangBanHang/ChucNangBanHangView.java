@@ -73,17 +73,14 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         dftm.setRowCount(0);
 
         for (GioHang gioHang : quanLyBanHang.getListGH(maHD)) {
-            
-            if (gioHang != null && gioHang.getMaHD() != null && !gioHang.getMaHD().equals(maHD)) {
-                dftm.addRow(new Object[]{
-                    stt++,
-                    gioHang.getMaSP(),
-                    gioHang.getTenSp(),
-                    gioHang.getSoLuong(),
-                    gioHang.getDonGia(),
-                    gioHang.getThanhTien()
-                });
-            }
+            dftm.addRow(new Object[]{
+                stt++,
+                gioHang.getMaSP(),
+                gioHang.getTenSp(),
+                gioHang.getSoLuong(),
+                gioHang.getDonGia(),
+                gioHang.getThanhTien()
+            });
 
         }
     }
@@ -499,9 +496,8 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         tblChiTietSanPham.setEnabled(true);
         int selectedRow = tblHoaDon.getSelectedRow();
         if (selectedRow >= 0) {
-            HoaDon hd = new HoaDon();
             String maHoaDon = tblHoaDon.getValueAt(selectedRow, 1).toString();
-            hd.setMaHoaDon(maHoaDon);
+
             loadDataGH(maHoaDon);
 
         }
