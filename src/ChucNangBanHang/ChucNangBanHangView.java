@@ -23,14 +23,26 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     DefaultTableModel dftm;
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
     ArrayList<GioHang> listGH = new ArrayList<>();
+    private String maHD = "";
     
     LocalDate date = LocalDate.now();
 
     public ChucNangBanHangView() {
         initComponents();
+        tblGioHang.setEnabled(false);
+        setFormHoaDon(false);
+        btnThanhToan.setEnabled(false);
+        btnThemSanPham.setEnabled(false);
+        tblChiTietSanPham.setEnabled(false);
 
         loadDataSP(quanLyBanHang.getListSP());
         loadDataHD(quanLyBanHang.getListHoaDon());
+        if (!maHD.equals("")) {
+            setFormHoaDon(true);
+            tblChiTietSanPham.setEnabled(true);
+            btnThemSanPham.setEnabled(true);
+            loadDataGH(maHD);
+        }
     }
 
     void loadDataSP(ArrayList<SanPham> list) {
@@ -487,11 +499,11 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        tblGioHang.setEnabled(false);
-        setFormHoaDon(false);
-        btnThanhToan.setEnabled(false);
-        btnThemSanPham.setEnabled(false);
-        tblChiTietSanPham.setEnabled(false);
+//        tblGioHang.setEnabled(false);
+//        setFormHoaDon(false);
+//        btnThanhToan.setEnabled(false);
+//        btnThemSanPham.setEnabled(false);
+//        tblChiTietSanPham.setEnabled(false);
     }//GEN-LAST:event_formWindowActivated
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
@@ -503,6 +515,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         int selectedRow = tblHoaDon.getSelectedRow();
         if (selectedRow >= 0) {
             String maHoaDon = tblHoaDon.getValueAt(selectedRow, 1).toString();
+            maHD = maHoaDon;
 
             loadDataGH(maHoaDon);
 
