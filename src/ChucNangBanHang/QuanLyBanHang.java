@@ -71,20 +71,31 @@ public class QuanLyBanHang {
         try {
             String sql = "select ma_san_pham,ten_san_pham,so_luong,don_gia,thanh_tien from GioHang where ma_hoa_don = ?";
             Connection conn = DBConnect.getConnection();
-            Statement stm = conn.createStatement();
             PreparedStatement ptm = conn.prepareStatement(sql);
-            ptm.setString(1, maHD);
-            ResultSet rs = stm.executeQuery(sql);
-            while (rs.next()) {
-                GioHang gh = new GioHang();
-                gh.setMaSP(rs.getString(1));
-                gh.setTenSp(rs.getString(2));
-                gh.setSoLuong(rs.getInt(3));
-                gh.setDonGia(rs.getDouble(4));
-                gh.setThanhTien(rs.getDouble(5));
-                listGioHang.add(gh);
+            ptm.setString(6, maHD);
+            ptm.executeUpdate();
+            conn.close();
+            try {
+                Statement stm = conn.createStatement();
+                ResultSet rs = stm.executeQuery(sql);
+
+                while (rs.next()) {
+                    GioHang gh = new GioHang();
+                    gh.setMaSP(rs.getString(1));
+                    gh.setTenSp(rs.getString(2));
+                    gh.setSoLuong(rs.getInt(3));
+                    gh.setDonGia(rs.getDouble(4));
+                    gh.setThanhTien(rs.getDouble(5));
+
+                    listGioHang.add(gh);
+                }
+            } catch (Exception e) {
+                System.out.println(1);
+                e.printStackTrace();
             }
+
         } catch (Exception e) {
+            System.out.println(2);
             e.printStackTrace();
         }
         return listGioHang;
@@ -123,7 +134,5 @@ public class QuanLyBanHang {
             e.printStackTrace();
         }
     }
-    
-    
 
 }
