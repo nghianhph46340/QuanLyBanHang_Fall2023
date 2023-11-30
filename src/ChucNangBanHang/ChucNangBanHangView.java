@@ -23,20 +23,21 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     DefaultTableModel dftm;
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
     ArrayList<GioHang> listGH = new ArrayList<>();
-    Integer stt = 1;
+    
     LocalDate date = LocalDate.now();
 
     public ChucNangBanHangView() {
         initComponents();
-        dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
-        loadDataSP(listSP);
+
+        loadDataSP(quanLyBanHang.getListSP());
         loadDataHD(quanLyBanHang.getListHoaDon());
     }
 
     void loadDataSP(ArrayList<SanPham> list) {
+        Integer stt = 1;
+        dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
         dftm.setRowCount(0);
-        
-        for (SanPham sanPham : quanLyBanHang.getListSP()) {
+        for (SanPham sanPham : list) {
             dftm.addRow(new Object[]{
                 stt++,
                 sanPham.getMaSp(),
@@ -514,23 +515,24 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         // TODO add your handling code here:
         String keyword = txtSearch.getText();
-                dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
+        //dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
 
         dftm.setRowCount(0);
-        for (SanPham sanPham: quanLyBanHang.search(keyword)) {
-            dftm.addRow(new Object[]{
-                stt,
-                sanPham.getMaSp(),
-                sanPham.getTenSP(),
-                sanPham.getNgayTao(),
-                sanPham.getTrongLuong(),
-                sanPham.getMoTa(),
-                sanPham.getSoLuong(),
-                sanPham.getGiaNhap(),
-                sanPham.getGiaBan()
-
-            });
-        }
+//        for (SanPham sanPham: quanLyBanHang.search(keyword)) {
+//            dftm.addRow(new Object[]{
+//                stt,
+//                sanPham.getMaSp(),
+//                sanPham.getTenSP(),
+//                sanPham.getNgayTao(),
+//                sanPham.getTrongLuong(),
+//                sanPham.getMoTa(),
+//                sanPham.getSoLuong(),
+//                sanPham.getGiaNhap(),
+//                sanPham.getGiaBan()
+//
+//            });
+//        }
+        loadDataSP((ArrayList<SanPham>) quanLyBanHang.search(keyword));
     }//GEN-LAST:event_txtSearchKeyReleased
 
     /**

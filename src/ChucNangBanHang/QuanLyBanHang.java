@@ -46,6 +46,10 @@ public class QuanLyBanHang {
         return listSanPham;
     }
 
+    ArrayList<SanPham> traListSP() {
+        return listSanPham;
+    }
+
     public ArrayList<HoaDon> getListHoaDon() {
         listHoaDon.clear();
         try {
