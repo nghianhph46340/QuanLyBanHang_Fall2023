@@ -71,9 +71,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         dftm = (DefaultTableModel) tblGioHang.getModel();
         Integer stt = 1;
         dftm.setRowCount(0);
-
         for (GioHang gioHang : quanLyBanHang.getListGH(maHD)) {
-            
             if (gioHang != null && gioHang.getMaHD() != null && !gioHang.getMaHD().equals(maHD)) {
                 dftm.addRow(new Object[]{
                     stt++,
@@ -516,10 +514,12 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         // TODO add your handling code here:
         String keyword = txtSearch.getText();
+                dftm = (DefaultTableModel) tblChiTietSanPham.getModel();
+
         dftm.setRowCount(0);
         for (SanPham sanPham: quanLyBanHang.search(keyword)) {
             dftm.addRow(new Object[]{
-                stt++,
+                stt,
                 sanPham.getMaSp(),
                 sanPham.getTenSP(),
                 sanPham.getNgayTao(),

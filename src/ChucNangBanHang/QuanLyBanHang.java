@@ -167,18 +167,18 @@ public class QuanLyBanHang {
                 ResultSet rs = stm.executeQuery();
                 while (rs.next()) {
                     SanPham sp = new SanPham();
-                    sp.setMaSp(rs.getString(1));
-                    sp.setTenSP(rs.getString(2));
-                    sp.setNgayTao(rs.getString(3));
-                    sp.setTrongLuong(Double.parseDouble(rs.getString(4)));
-                    sp.setMoTa(rs.getString(5));
-                    sp.setSoLuong(Integer.parseInt(rs.getString(5)));
-                    sp.setGiaNhap(Double.parseDouble(rs.getString(6)));
-                    sp.setGiaBan(Double.parseDouble(rs.getString(7)));
+                    sp.setMaSp(rs.getString("ma_san_pham"));
+                    sp.setTenSP(rs.getString("ten_san_pham"));
+                    sp.setNgayTao(rs.getString("ngay_tao"));
+                    sp.setTrongLuong(Double.parseDouble(rs.getString("trong_luong")));
+                    sp.setMoTa(rs.getString("mo_ta"));
+                    sp.setSoLuong(Integer.parseInt(rs.getString("so_luong_ton")));
+                    sp.setGiaNhap(Double.parseDouble(rs.getString("gia_nhap")));
+                    sp.setGiaBan(Double.parseDouble(rs.getString("gia_ban")));
                     listSanPham.add(sp);
                 }
             } catch (NumberFormatException e) {
-
+                System.out.println(e);
             }
 
         } catch (Exception e) {
