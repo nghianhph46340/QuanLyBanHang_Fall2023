@@ -53,18 +53,21 @@ public class QuanLyBanHang {
     public ArrayList<HoaDon> getListHoaDon() {
         listHoaDon.clear();
         try {
-            String sql = "SELECT ma_hoa_don, ngay_tao, ten_nhan_vien, trang_thai FROM HoaDon";
+            String sql = "SELECT ma_hoa_don, ngay_tao, ho_ten, trang_thai FROM HoaDon" + "\n"
+                    + "join NhanVien on NhanVien.ma_nhan_vien = HoaDon.ma_nhan_vien" + "\n"
+                    + "where NhanVien.ma_nhan_vien = 'NV001'";
             Connection conn = DBConnect.getConnection();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 HoaDon hd = new HoaDon();
-                hd.setMaHoaDon(rs.getString("ma_hoa_don"));
-                hd.setNgayTao(rs.getString("ngay_tao"));
-                hd.setTenNV(rs.getString("ten_nhan_vien"));
-                hd.setTinhTrang(rs.getString("trang_thai"));
+                hd.setMaHoaDon(rs.getString(1));
+                hd.setNgayTao(rs.getString(2));
+                hd.setTenNV(rs.getString(3));
+                hd.setTinhTrang(rs.getString(4));
                 listHoaDon.add(hd);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,7 +127,6 @@ public class QuanLyBanHang {
         }
         return listGioHang;
     }
-    
 
     public void addSanPham(GioHang gh) {
         String sql = "insert into GioHang (ma_hoa_don,ma_san_pham,ten_san_pham,so_luong,don_gia,thanh_tien) values (?,?,?,?,?,?)";
@@ -145,14 +147,14 @@ public class QuanLyBanHang {
     }
 
     public void addHoaDon(HoaDon hd) {
-        String sql = "insert into HoaDon(ma_hoa_don,ngay_tao,ten_nhan_vien,trang_thai) values(?,?,?,?)";
+        String sql = "insert into HoaDon(ma_hoa_don,ngay_tao,trang_thai,ma_nhan_vien) values(?,?,?,?)";
         try {
             Connection conn = DBConnect.getConnection();
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, hd.getMaHoaDon());
             stm.setString(2, hd.getNgayTao());
-            stm.setString(3, hd.getTenNV());
-            stm.setString(4, hd.getTinhTrang());
+            stm.setString(3, hd.getTinhTrang());
+            stm.setString(4, "NV001");
             stm.executeUpdate();
             conn.close();
         } catch (Exception e) {
