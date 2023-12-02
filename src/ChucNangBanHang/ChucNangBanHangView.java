@@ -709,7 +709,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             String so = JOptionPane.showInputDialog("Nhập số lượng sản phẩm cần update");
             if (checkSo(so)) {
                 Integer soLuong = Integer.parseInt(so);
-                if (soLuong == soLuongGH) {
+                if (soLuong == 0) {
                     quanLyBanHang.DeleteGioHang(maSP);
                     quanLyBanHang.updateSLGioHangTru(maSP, soLuong, maHD);
                     quanLyBanHang.updateSLSanPhamCong(maSP, soLuong);
