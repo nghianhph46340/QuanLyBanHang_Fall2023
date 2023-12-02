@@ -53,7 +53,8 @@ public class QuanLyBanHang {
     public ArrayList<HoaDon> getListHoaDon() {
         listHoaDon.clear();
         try {
-            String sql = "SELECT ma_hoa_don, ngay_tao, ten_nhan_vien, trang_thai FROM HoaDon";
+            String sql = "SELECT ma_hoa_don, ngay_tao, NhanVien.ho_ten, trang_thai FROM HoaDon\n"
+                    + "join NhanVien on NhanVien.ma_nhan_vien = HoaDon.ma_nhan_vien";
             Connection conn = DBConnect.getConnection();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql);
@@ -61,7 +62,7 @@ public class QuanLyBanHang {
                 HoaDon hd = new HoaDon();
                 hd.setMaHoaDon(rs.getString("ma_hoa_don"));
                 hd.setNgayTao(rs.getString("ngay_tao"));
-                hd.setTenNV(rs.getString("ten_nhan_vien"));
+                hd.setTenNV(rs.getString("ho_ten"));
                 hd.setTinhTrang(rs.getString("trang_thai"));
                 listHoaDon.add(hd);
             }
@@ -124,7 +125,6 @@ public class QuanLyBanHang {
         }
         return listGioHang;
     }
-    
 
     public void addSanPham(GioHang gh) {
         String sql = "insert into GioHang (ma_hoa_don,ma_san_pham,ten_san_pham,so_luong,don_gia,thanh_tien) values (?,?,?,?,?,?)";
@@ -139,19 +139,20 @@ public class QuanLyBanHang {
             stm.setDouble(6, gh.getThanhTien());
             stm.executeUpdate();
             conn.close();
+            System.out.println("uiyẻuwyủ");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void addHoaDon(HoaDon hd) {
-        String sql = "insert into HoaDon(ma_hoa_don,ngay_tao,ten_nhan_vien,trang_thai) values(?,?,?,?)";
+        String sql = "insert into HoaDon(ma_hoa_don,ngay_tao,ma_nhan_vien,trang_thai) values(?,?,?,?)";
         try {
             Connection conn = DBConnect.getConnection();
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, hd.getMaHoaDon());
             stm.setString(2, hd.getNgayTao());
-            stm.setString(3, hd.getTenNV());
+            stm.setString(3, "NV001");
             stm.setString(4, hd.getTinhTrang());
             stm.executeUpdate();
             conn.close();
@@ -161,13 +162,14 @@ public class QuanLyBanHang {
     }
 
     public List<SanPham> search(String keyWord) {
-        String sql = "select * from SanPham where ma_san_pham like ?";
+        String sql = "select * from SanPham where ma_san_pham like ? or ten_san_pham like ?";
         listSanPham.clear();
         try {
             try {
                 Connection conn = DBConnect.getConnection();
                 PreparedStatement stm = conn.prepareStatement(sql);
                 stm.setString(1, "%" + keyWord + "%");
+                stm.setString(2, "%" + keyWord + "%");
                 ResultSet rs = stm.executeQuery();
                 while (rs.next()) {
                     SanPham sp = new SanPham();
@@ -190,5 +192,73 @@ public class QuanLyBanHang {
         }
         return listSanPham;
     }
-
+    public ArrayList<SanPham> updateSLSanPhamTru(String maSP, Integer soLuong){
+        String sql = "update SanPham set so_luong_ton = so_luong_ton - ? where ma_san_pham = ?";
+        try {
+            Connection conn = DBConnect.getConnection();
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setInt(1, soLuong);
+            stm.setString(2, maSP);
+            stm.executeUpdate();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listSanPham;
+    }
+    public ArrayList<GioHang> updateSLGioHangCong(String ma, Integer soLuong){
+        String sql = "update GioHang set so_luong = so_luong + ? where ma_san_pham = ?";
+        try {
+           Connection conn = DBConnect.getConnection();
+           PreparedStatement stm = conn.prepareStatement(sql);
+           stm.setInt(1, soLuong);
+           stm.setString(2, ma);
+           stm.executeUpdate();
+           conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listGioHang;
+    }
+    public ArrayList<SanPham> updateSLSanPhamCong(String maSP, Integer soLuong){
+        String sql = "update SanPham set so_luong_ton = so_luong_ton + ? where ma_san_pham = ?";
+        try {
+            Connection conn = DBConnect.getConnection();
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setInt(1, soLuong);
+            stm.setString(2, maSP);
+            stm.executeUpdate();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listSanPham;
+    }
+    public ArrayList<GioHang> updateSLGioHangTru(String ma, Integer soLuong){
+        String sql = "update GioHang set so_luong = so_luong - ? where ma_san_pham = ?";
+        try {
+           Connection conn = DBConnect.getConnection();
+           PreparedStatement stm = conn.prepareStatement(sql);
+           stm.setInt(1, soLuong);
+           stm.setString(2, ma);
+           stm.executeUpdate();
+           conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listGioHang;
+    }
+    public ArrayList<GioHang> DeleteGioHang(String maSP){
+        String sql = "delete from GioHang where ma_san_pham = ?";
+        try {
+            Connection conn = DBConnect.getConnection();
+            PreparedStatement stm  = conn.prepareStatement(sql);
+            stm.setString(1, maSP);
+            stm.executeUpdate();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listGioHang;
+    }
 }
