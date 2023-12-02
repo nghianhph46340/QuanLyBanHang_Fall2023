@@ -178,12 +178,15 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         return list;
     }
 
-    boolean checkForm(){
-        if (txtMaHD.getText().isEmpty() && txtNgayTao.getText().isEmpty()) {
-            
+    boolean checkForm() {
+        if (!txtMaHD.getText().isEmpty() && !txtNgayTao.getText().isEmpty() && !txtTenNV.getText().isEmpty()
+                && !txtTienKhachDua.getText().isEmpty() && !txtTongTien.getText().isEmpty() && !txtTienThua.getText().isEmpty()
+                && checkSo(txtTienKhachDua.getText())) {
+            btnThanhToan.setEnabled(true);
         }
+        return false;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -313,7 +316,18 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
         jLabel7.setText("Tiền thừa");
 
+        txtTienKhachDua.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTienKhachDuaKeyReleased(evt);
+            }
+        });
+
         btnThanhToan.setText("Thanh toán");
+        btnThanhToan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnThanhToanMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -737,7 +751,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             if (checkSo(so)) {
                 Integer soLuong = Integer.parseInt(so);
                 Double thanhTien = gia * soLuong;
-                quanLyBanHang.setThanhTienGH(maSP,maHD, thanhTien);
+                quanLyBanHang.setThanhTienGH(maSP, maHD, thanhTien);
                 System.out.println(quanLyBanHang.getListGH(maHD).get(row).getThanhTien() + "1");
                 if (soLuong == 0) {
                     quanLyBanHang.DeleteGioHang(maSP);
@@ -797,6 +811,38 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_rdChoThanhToanActionPerformed
+
+    private void txtTienKhachDuaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachDuaKeyReleased
+        // TODO add your handling code here:
+        String tienKhachDua = txtTienKhachDua.getText().trim();
+        double tongTien = Double.valueOf(txtTongTien.getText());
+        double tienThua = 0.0;
+        if (checkSo(tienKhachDua)) {
+            double tienKhach = Double.valueOf(tienKhachDua);
+            tienThua = tienKhach - tongTien;
+            if (tienThua < 0) {
+                //JOptionPane.showMessageDialog(this, "Quý khách cần thanh toán thêm: "+ (tienThua - tienThua - tienThua));
+                txtTienThua.setText("");
+            } else {
+                txtTienThua.setText(tienThua + "");
+                btnThanhToan.setEnabled(true);
+            }
+        }
+    }//GEN-LAST:event_txtTienKhachDuaKeyReleased
+
+    private void btnThanhToanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThanhToanMouseClicked
+        // TODO add your handling code here:
+        String ss = "Đã thanh toán";
+
+        int row = tblHoaDon.getSelectedRow();
+        String maHD = (String) tblHoaDon.getValueAt(row, 1);
+        if (row >= 0) {
+            loadDataHD(quanLyBanHang.updateTTHD(maHD, ss));
+            JOptionPane.showMessageDialog(this, "Thanh toán thành công");
+        } else {
+            JOptionPane.showMessageDialog(this, "Chưa chọn dòng");
+        }
+    }//GEN-LAST:event_btnThanhToanMouseClicked
 
     /**
      * @param args the command line arguments

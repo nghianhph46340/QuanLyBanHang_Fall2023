@@ -331,4 +331,18 @@ public class QuanLyBanHang {
         }
         return listGioHang;
     }
+    public ArrayList<HoaDon> updateTTHD(String maHD, String tinhTrang) {
+        String sql = "update HoaDon set trang_thai = ? where ma_hoa_don = ?";
+        try {
+            Connection conn = DBConnect.getConnection();
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, tinhTrang);
+            stm.setString(2, maHD);
+            stm.executeUpdate();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listHoaDon;
+    }
 }
