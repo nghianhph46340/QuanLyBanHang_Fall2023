@@ -155,7 +155,6 @@ public class QuanLyBanHang {
             stm.setDouble(6, gh.getThanhTien());
             stm.executeUpdate();
             conn.close();
-            System.out.println("uiyẻuwyủ");
         } catch (Exception e) {
             e.printStackTrace();
         }
