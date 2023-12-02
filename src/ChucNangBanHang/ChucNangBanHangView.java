@@ -536,7 +536,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                         Double thanhTien = donGia * soLuong;
                         GioHang gioHangNew = new GioHang(maHD, maSp, tenSp, soLuong, donGia, thanhTien);
                         if (check) {
-                            quanLyBanHang.updateSLGioHangCong(maSp, soLuong);
+                            quanLyBanHang.updateSLGioHangCong(maSp, soLuong, maHD);
                             quanLyBanHang.updateSLSanPhamTru(maSp, soLuong);
                             loadDataSP(quanLyBanHang.getListSP());
                             loadDataGH(maHD);
@@ -647,16 +647,24 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     private void btnUpdateSLGHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateSLGHMouseClicked
         // TODO add your handling code here:
         int row = tblGioHang.getSelectedRow();
+        int row2 = tblHoaDon.getSelectedRow();
         if (row >= 0) {
             String maSP = (String) tblGioHang.getValueAt(row, 1);
             Integer soLuongGH = (Integer) tblGioHang.getValueAt(row, 3);
-
+            String maHD = (String) tblHoaDon.getValueAt(row2, 1);
             String so = JOptionPane.showInputDialog("Nhập số lượng sản phẩm cần update");
             if (checkSo(so)) {
                 Integer soLuong = Integer.parseInt(so);
 
                 if (checkSoAm(soLuong, soLuongGH)) {
-                    quanLyBanHang.updateSLGioHangTru(maSP, soLuong);
+                    quanLyBanHang.updateSLGioHangTru(maSP, soLuong, maHD);
+                    quanLyBanHang.updateSLSanPhamCong(maSP, soLuong);
+                    loadDataGH(maHD);
+                    loadDataSP(quanLyBanHang.getListSP());
+                }
+                if (soLuong == soLuongGH) {
+                    quanLyBanHang.DeleteGioHang(maSP);
+                    quanLyBanHang.updateSLGioHangTru(maSP, soLuong, maHD);
                     quanLyBanHang.updateSLSanPhamCong(maSP, soLuong);
                     loadDataGH(maHD);
                     loadDataSP(quanLyBanHang.getListSP());
