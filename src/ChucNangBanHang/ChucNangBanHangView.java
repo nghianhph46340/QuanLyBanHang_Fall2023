@@ -109,6 +109,23 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
     }
 
+    HoaDon getFormHD(String tt) {
+        HoaDon hd = new HoaDon();
+        hd.setMaHoaDon(txtMaHD.getText());
+        hd.setNgayTao(txtNgayTao.getText());
+        hd.setTenNV(txtTenNV.getText());
+        hd.setTinhTrang(tt);
+
+        return hd;
+    }
+
+    void setFormHD(HoaDon hd) {
+        txtMaHD.setText(hd.maHoaDon);
+        txtNgayTao.setText(hd.ngayTao);
+        txtTenNV.setText(hd.tenNV);
+
+    }
+
     Boolean checkMaSP(String maSP) {
         for (GioHang sp : quanLyBanHang.getListGH(maHD)) {
             if (sp.getMaSP().equals(maSP)) {
@@ -161,6 +178,12 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         return list;
     }
 
+    boolean checkForm(){
+        if (txtMaHD.getText().isEmpty() && txtNgayTao.getText().isEmpty()) {
+            
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -595,6 +618,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             }
 
         }
+        txtTongTien.setText(quanLyBanHang.tinhTongTien(quanLyBanHang.getListGH(maHD)) + "");
 
 
     }//GEN-LAST:event_btnThemSanPhamMouseClicked
@@ -649,7 +673,8 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                 rdTatCa.setSelected(true);
             }
             loadDataGH(maHoaDon);
-
+            setFormHD(quanLyBanHang.getRow(selectedRow));
+            txtTongTien.setText(quanLyBanHang.tinhTongTien(quanLyBanHang.getListGH(maHD)) + "");
         }
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
@@ -696,6 +721,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Chưa chọn dòng");
         }
+        txtTongTien.setText(quanLyBanHang.tinhTongTien(quanLyBanHang.getListGH(maHD)) + "");
     }//GEN-LAST:event_btnXoaGHMouseClicked
 
     private void btnUpdateSLGHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateSLGHMouseClicked
@@ -706,15 +732,20 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             String maSP = (String) tblGioHang.getValueAt(row, 1);
             Integer soLuongGH = (Integer) tblGioHang.getValueAt(row, 3);
             String maHD = (String) tblHoaDon.getValueAt(row2, 1);
+            Double gia = (Double) tblGioHang.getValueAt(row, 4);
             String so = JOptionPane.showInputDialog("Nhập số lượng sản phẩm cần update");
             if (checkSo(so)) {
                 Integer soLuong = Integer.parseInt(so);
+                Double thanhTien = gia * soLuong;
+                quanLyBanHang.setThanhTienGH(maSP,maHD, thanhTien);
+                System.out.println(quanLyBanHang.getListGH(maHD).get(row).getThanhTien() + "1");
                 if (soLuong == 0) {
                     quanLyBanHang.DeleteGioHang(maSP);
                     quanLyBanHang.updateSLGioHangTru(maSP, soLuong, maHD);
                     quanLyBanHang.updateSLSanPhamCong(maSP, soLuong);
                     loadDataGH(maHD);
                     loadDataSP(quanLyBanHang.getListSP());
+                    txtTongTien.setText(quanLyBanHang.tinhTongTien(quanLyBanHang.getListGH(maHD)) + "");
                 }
                 if (checkSoAm(soLuong, soLuongGH)) {
                     quanLyBanHang.updateSLGioHangTru(maSP, soLuong, maHD);
@@ -725,6 +756,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                     }
                     loadDataGH(maHD);
                     loadDataSP(quanLyBanHang.getListSP());
+                    txtTongTien.setText(quanLyBanHang.tinhTongTien(quanLyBanHang.getListGH(maHD)) + "");
                 }
 
             }
@@ -738,20 +770,20 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         // TODO add your handling code here:
         String n = "Chưa thanh toán";
         loadDataHD(listTrangThai(n));
-        
+
 
     }//GEN-LAST:event_rdChoThanhToanMouseClicked
 
     private void rdTatCaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdTatCaMouseClicked
         // TODO add your handling code here:
         loadDataHD(quanLyBanHang.getListHoaDon());
-     
+
     }//GEN-LAST:event_rdTatCaMouseClicked
 
     private void rdDaHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdDaHuyMouseClicked
         // TODO add your handling code here:
         String n = "Đã huỷ";
-       loadDataHD(listTrangThai(n));
+        loadDataHD(listTrangThai(n));
 
     }//GEN-LAST:event_rdDaHuyMouseClicked
 

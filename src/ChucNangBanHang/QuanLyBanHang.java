@@ -49,6 +49,19 @@ public class QuanLyBanHang {
     ArrayList<SanPham> traListSP() {
         return listSanPham;
     }
+    
+     public HoaDon getRow(int row){
+        return listHoaDon.get(row);                   
+    }
+    
+    public Double tinhTongTien(ArrayList<GioHang> list){
+        Double tongTien = 0.0;
+        for (GioHang gioHang : list) {
+            tongTien += gioHang.getThanhTien();
+        }
+        return tongTien;
+        
+    }
 
     public ArrayList<HoaDon> getListHoaDon() {
         listHoaDon.clear();
@@ -300,5 +313,22 @@ public class QuanLyBanHang {
             e.printStackTrace();
         }
         return listHoaDon;
+    }
+    
+    public ArrayList<GioHang> setThanhTienGH(String maSP,String maHD, Double tt){
+        String sql = "update GioHang set thanh_tien = ? where ma_hoa_don = ? and ma_san_pham = ?";
+        try {
+            Connection conn = DBConnect.getConnection();
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setDouble(1, tt);
+            stm.setString(2, maHD);
+            stm.setString(3, maSP);
+            stm.executeUpdate();
+            conn.close();
+            return listGioHang;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listGioHang;
     }
 }
