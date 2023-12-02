@@ -129,6 +129,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         }
 
     }
+    
 
     Boolean checkSoAm(Integer soNhapVao, Integer soSoSanh) {
         if (soNhapVao < 0) {
