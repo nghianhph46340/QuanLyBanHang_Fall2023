@@ -121,11 +121,11 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     Boolean checkSo(String nhap) {
         try {
             double so = Double.parseDouble(nhap);
-            //Integer so1 = Integer.valueOf(nhap);
+            Integer so1 = Integer.valueOf(nhap);
             return true;
         } catch (NumberFormatException e) {
 
-            JOptionPane.showMessageDialog(this, "Đã nhập vào chữ mới nhập lại");
+            JOptionPane.showMessageDialog(this, "Đã nhập vào không đúng mới nhập lại");
             return false;
         }
 
