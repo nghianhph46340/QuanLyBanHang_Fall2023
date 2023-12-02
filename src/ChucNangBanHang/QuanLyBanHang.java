@@ -244,7 +244,7 @@ public class QuanLyBanHang {
     }
 
     public ArrayList<GioHang> updateSLGioHangTru(String ma, Integer soLuong, String maHD) {
-        String sql = "update GioHang set so_luong = so_luong - ? where ma_san_pham = ? and ma_hoa_don = ?";
+        String sql = "update GioHang set so_luong =  ? where ma_san_pham = ? and ma_hoa_don = ?";
         try {
             Connection conn = DBConnect.getConnection();
             PreparedStatement stm = conn.prepareStatement(sql);
