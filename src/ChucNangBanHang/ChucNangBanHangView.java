@@ -34,7 +34,6 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         btnThanhToan.setEnabled(false);
         btnThemSanPham.setEnabled(false);
         tblChiTietSanPham.setEnabled(false);
-
         loadDataSP(quanLyBanHang.getListSP());
         loadDataHD(quanLyBanHang.getListHoaDon());
         if (!maHD.equals("")) {
@@ -275,11 +274,6 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         rdChoThanhToan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rdChoThanhToanMouseClicked(evt);
-            }
-        });
-        rdChoThanhToan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdChoThanhToanActionPerformed(evt);
             }
         });
 
@@ -650,7 +644,8 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         i++;
         HoaDon hoaDon = new HoaDon("HD0" + i, date + "", "", "Chưa thanh toán");
         quanLyBanHang.addHoaDon(hoaDon);
-        loadDataHD(quanLyBanHang.getListHoaDon());
+        
+        loadDataHD(listTrangThai("Chưa thanh toán"));
 
 
     }//GEN-LAST:event_btnTaoHoaDonMouseClicked
@@ -806,11 +801,6 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         String n = "Đã thanh toán";
         loadDataHD(listTrangThai(n));
     }//GEN-LAST:event_rdDaThanhToanMouseClicked
-
-    private void rdChoThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdChoThanhToanActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_rdChoThanhToanActionPerformed
 
     private void txtTienKhachDuaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachDuaKeyReleased
         // TODO add your handling code here:
