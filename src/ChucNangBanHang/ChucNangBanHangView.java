@@ -839,6 +839,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         if (row >= 0) {
             loadDataHD(quanLyBanHang.updateTTHD(maHD, ss));
             JOptionPane.showMessageDialog(this, "Thanh toán thành công");
+            loadDataHD(quanLyBanHang.getListHoaDon());
         } else {
             JOptionPane.showMessageDialog(this, "Chưa chọn dòng");
         }
