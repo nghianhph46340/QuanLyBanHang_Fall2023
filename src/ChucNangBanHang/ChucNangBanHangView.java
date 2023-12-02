@@ -24,7 +24,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     QuanLyBanHang quanLyBanHang = new QuanLyBanHang();
     ArrayList<GioHang> listGH = new ArrayList<>();
     private String maHD = "";
-    
+
     LocalDate date = LocalDate.now();
 
     public ChucNangBanHangView() {
@@ -93,7 +93,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                 gioHang.getDonGia(),
                 gioHang.getThanhTien()
             });
-           
+
         }
     }
 
@@ -105,6 +105,44 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         txtTienKhachDua.setEnabled(hd);
         txtTienThua.setEnabled(hd);
         txtTongTien.setEnabled(hd);
+
+    }
+
+    Boolean checkMaSP(String maSP) {
+        for (GioHang sp : quanLyBanHang.getListGH(maHD)) {
+            if (sp.getMaSP().equals(maSP)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    Boolean checkSo(String nhap) {
+        try {
+            double so = Double.parseDouble(nhap);
+            //Integer so1 = Integer.valueOf(nhap);
+            return true;
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(this, "Đã nhập vào chữ mới nhập lại");
+            return false;
+        }
+
+    }
+
+    Boolean checkSoAm(Integer soNhapVao, Integer soSoSanh) {
+        if (soNhapVao < 0) {
+            JOptionPane.showMessageDialog(this, "Số lượng nhập bị âm");
+            return false;
+        } else {
+            if (soNhapVao > soSoSanh) {
+                JOptionPane.showMessageDialog(this, "Số lượng nhập vào quá lớn");
+                return false;
+            } else {
+
+            }
+            return true;
+        }
 
     }
 
@@ -150,6 +188,8 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         tblChiTietSanPham = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
         btnThemSanPham = new javax.swing.JButton();
+        btnXoaGH = new javax.swing.JButton();
+        btnUpdateSLGH = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -280,6 +320,11 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                 "STT", "Mã SP", "Tên Sp", "Số lượng", "Đơn giá", "Thành tiền"
             }
         ));
+        tblGioHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblGioHangMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblGioHang);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -343,7 +388,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                         .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3)
                         .addGap(31, 31, 31))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -363,6 +408,20 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             }
         });
 
+        btnXoaGH.setText("Xoá SP");
+        btnXoaGH.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnXoaGHMouseClicked(evt);
+            }
+        });
+
+        btnUpdateSLGH.setText("Update SL");
+        btnUpdateSLGH.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnUpdateSLGHMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -377,13 +436,13 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(rdChoThanhToan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(45, 45, 45)
-                                .addComponent(rdTatCa, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                                .addComponent(rdTatCa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(45, 45, 45)
                                 .addComponent(rdDaHuy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(45, 45, 45)
                                 .addComponent(rdDaThanhToan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                 .addGap(1, 1, 1))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
@@ -399,15 +458,17 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                                 .addGap(417, 417, 417))
                             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(1, 1, 1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnXoaGH)
+                            .addComponent(btnUpdateSLGH))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnThemSanPham)))
+                    .addComponent(btnThemSanPham))
                 .addGap(45, 45, 45))
         );
         layout.setVerticalGroup(
@@ -431,7 +492,12 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnXoaGH)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnUpdateSLGH)))
                         .addGap(38, 38, 38)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
@@ -450,6 +516,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     private void btnThemSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemSanPhamMouseClicked
         // TODO add your handling code here:
         int row = tblHoaDon.getSelectedRow();
+
         if (row >= 0) {
             String maHD = tblHoaDon.getValueAt(row, 1).toString();
             int i = tblChiTietSanPham.getSelectedRow();
@@ -459,19 +526,32 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                 String sLTB = tblChiTietSanPham.getValueAt(i, 6).toString();
                 Integer slb = Integer.parseInt(sLTB);
                 String soLuong1 = JOptionPane.showInputDialog("Nhập số lượng cần mua: ");
-                Integer soLuong = Integer.parseInt(soLuong1);
+                Integer soLuong = null;
+                if (checkSo(soLuong1)) {
+                    soLuong = Integer.parseInt(soLuong1);
+                    Double donGia = (Double) tblChiTietSanPham.getValueAt(i, 8);
+                    if ((soLuong <= slb && soLuong > 0)) {
+                        boolean check = checkMaSP(maSp);
+                        Double thanhTien = donGia * soLuong;
+                        GioHang gioHangNew = new GioHang(maHD, maSp, tenSp, soLuong, donGia, thanhTien);
+                        if (check) {
+                            quanLyBanHang.updateSLGioHangCong(maSp, soLuong);
+                            quanLyBanHang.updateSLSanPhamTru(maSp, soLuong);
+                            loadDataSP(quanLyBanHang.getListSP());
+                            loadDataGH(maHD);
+                        } else {
 
-                Double donGia = (Double) tblChiTietSanPham.getValueAt(i, 8);
-                if (soLuong <= slb && soLuong > 0) {
-                    Double thanhTien = donGia * soLuong;
-                    GioHang gioHangNew = new GioHang(maHD, maSp, tenSp, soLuong, donGia, thanhTien);
+                            quanLyBanHang.addSanPham(gioHangNew);
+                            quanLyBanHang.updateSLSanPhamTru(maSp, soLuong);
+                            loadDataGH(maHD);
+                            loadDataSP(quanLyBanHang.getListSP());
 
-                    quanLyBanHang.addSanPham(gioHangNew);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Nhập lại số lượng");
+                    }
+                } 
 
-                    loadDataGH(maHD);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Nhập lại số lượng");
-                }
             }
 
         }
@@ -545,6 +625,49 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         loadDataSP((ArrayList<SanPham>) quanLyBanHang.search(keyword));
     }//GEN-LAST:event_txtSearchKeyReleased
 
+    private void tblGioHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGioHangMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_tblGioHangMouseClicked
+
+    private void btnXoaGHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaGHMouseClicked
+        // TODO add your handling code here:
+        int row = tblGioHang.getSelectedRow();
+        String maSP = (String) tblGioHang.getValueAt(row, 1);
+        if (row >= 0) {
+            quanLyBanHang.DeleteGioHang(maSP);
+            JOptionPane.showMessageDialog(this, "Xoá thành công");
+            loadDataGH(maHD);
+        } else {
+            JOptionPane.showMessageDialog(this, "Chưa chọn dòng");
+        }
+    }//GEN-LAST:event_btnXoaGHMouseClicked
+
+    private void btnUpdateSLGHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateSLGHMouseClicked
+        // TODO add your handling code here:
+        int row = tblGioHang.getSelectedRow();
+        if (row >= 0) {
+            String maSP = (String) tblGioHang.getValueAt(row, 1);
+            Integer soLuongGH = (Integer) tblGioHang.getValueAt(row, 3);
+
+            String so = JOptionPane.showInputDialog("Nhập số lượng sản phẩm cần update");
+            if (checkSo(so)) {
+                Integer soLuong = Integer.parseInt(so);
+
+                if (checkSoAm(soLuong, soLuongGH)) {
+                    quanLyBanHang.updateSLGioHangTru(maSP, soLuong);
+                    quanLyBanHang.updateSLSanPhamCong(maSP, soLuong);
+                    loadDataGH(maHD);
+                    loadDataSP(quanLyBanHang.getListSP());
+                }
+
+            } 
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Chưa chọn dòng");
+        }
+    }//GEN-LAST:event_btnUpdateSLGHMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -584,6 +707,8 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     private javax.swing.JButton btnTaoHoaDon;
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnThemSanPham;
+    private javax.swing.JButton btnUpdateSLGH;
+    private javax.swing.JButton btnXoaGH;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
