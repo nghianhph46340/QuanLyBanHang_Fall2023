@@ -43,6 +43,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             btnThemSanPham.setEnabled(true);
             loadDataGH(maHD);
         }
+
     }
 
     void loadDataSP(ArrayList<SanPham> list) {
@@ -69,7 +70,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         dftm.setRowCount(0);
         Integer stt = 1;
 
-        for (HoaDon hoaDon : quanLyBanHang.getListHoaDon()) {
+        for (HoaDon hoaDon : list) {
             dftm.addRow(new Object[]{
                 stt++,
                 hoaDon.getMaHoaDon(),
@@ -148,9 +149,13 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
     ArrayList<HoaDon> listTrangThai(String trangThai) {
         ArrayList<HoaDon> list = new ArrayList<>();
-        for (HoaDon hd : quanLyBanHang.getListHoaDon()) {
-            if (hd.getTinhTrang().equals(trangThai)) {
-                list.add(hd);
+        if (quanLyBanHang.getListHoaDon().isEmpty()) {
+            System.out.println("Rong");
+        } else {
+            for (HoaDon hd : quanLyBanHang.getListHoaDon()) {
+                if (hd.getTinhTrang().equals(trangThai)) {
+                    list.add(hd);
+                }
             }
         }
         return list;
@@ -244,6 +249,11 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         rdChoThanhToan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rdChoThanhToanMouseClicked(evt);
+            }
+        });
+        rdChoThanhToan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdChoThanhToanActionPerformed(evt);
             }
         });
 
@@ -728,31 +738,33 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         // TODO add your handling code here:
         String n = "Chưa thanh toán";
         loadDataHD(listTrangThai(n));
-        System.out.println("hihi");
+        
+
     }//GEN-LAST:event_rdChoThanhToanMouseClicked
 
     private void rdTatCaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdTatCaMouseClicked
         // TODO add your handling code here:
         loadDataHD(quanLyBanHang.getListHoaDon());
-        System.out.println("hihi");
+     
     }//GEN-LAST:event_rdTatCaMouseClicked
 
     private void rdDaHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdDaHuyMouseClicked
         // TODO add your handling code here:
         String n = "Đã huỷ";
-        loadDataHD(listTrangThai(n));
-        System.out.println("hihi");
+       loadDataHD(listTrangThai(n));
+
     }//GEN-LAST:event_rdDaHuyMouseClicked
 
     private void rdDaThanhToanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdDaThanhToanMouseClicked
         // TODO add your handling code here:
         String n = "Đã thanh toán";
         loadDataHD(listTrangThai(n));
-        for (HoaDon hd : listTrangThai(n)) {
-            hd.toString();
-        }
-        System.out.println("hihi");
     }//GEN-LAST:event_rdDaThanhToanMouseClicked
+
+    private void rdChoThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdChoThanhToanActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_rdChoThanhToanActionPerformed
 
     /**
      * @param args the command line arguments

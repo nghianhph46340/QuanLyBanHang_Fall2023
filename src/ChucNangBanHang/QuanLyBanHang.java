@@ -272,4 +272,33 @@ public class QuanLyBanHang {
         }
         return listGioHang;
     }
+
+    public ArrayList<HoaDon> LocHoaDon(String trangThai) {
+        listHoaDon.clear();
+        String sql = "select ma_hoa_don, ngay_tao,NhanVien.ho_ten  from HoaDon\n"
+                + "join NhanVien on NhanVien.ma_nhan_vien = HoaDon.ma_nhan_vien\n"
+                + "where trang_thai = ?";
+        try {
+            Connection conn = DBConnect.getConnection();
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, "N" + trangThai);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                HoaDon hd = new HoaDon();
+                hd.setMaHoaDon(rs.getString("ma_hoa_don"));
+                hd.setNgayTao(rs.getString("ngay_tao"));
+                hd.setTenNV(rs.getString("NhanVien.ho_ten"));
+                hd.setTinhTrang(trangThai);
+                listHoaDon.add(hd);
+                
+            }
+            rs.close();
+            stm.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listHoaDon;
+    }
 }
