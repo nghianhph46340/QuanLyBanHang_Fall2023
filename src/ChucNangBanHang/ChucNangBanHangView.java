@@ -34,7 +34,6 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         btnThanhToan.setEnabled(false);
         btnThemSanPham.setEnabled(false);
         tblChiTietSanPham.setEnabled(false);
-
         loadDataSP(quanLyBanHang.getListSP());
         loadDataHD(quanLyBanHang.getListHoaDon());
         if (!maHD.equals("")) {
@@ -43,6 +42,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             btnThemSanPham.setEnabled(true);
             loadDataGH(maHD);
         }
+
     }
 
     void loadDataSP(ArrayList<SanPham> list) {
@@ -69,7 +69,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         dftm.setRowCount(0);
         Integer stt = 1;
 
-        for (HoaDon hoaDon : quanLyBanHang.getListHoaDon()) {
+        for (HoaDon hoaDon : list) {
             dftm.addRow(new Object[]{
                 stt++,
                 hoaDon.getMaHoaDon(),
@@ -108,6 +108,23 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
     }
 
+    HoaDon getFormHD(String tt) {
+        HoaDon hd = new HoaDon();
+        hd.setMaHoaDon(txtMaHD.getText());
+        hd.setNgayTao(txtNgayTao.getText());
+        hd.setTenNV(txtTenNV.getText());
+        hd.setTinhTrang(tt);
+
+        return hd;
+    }
+
+    void setFormHD(HoaDon hd) {
+        txtMaHD.setText(hd.maHoaDon);
+        txtNgayTao.setText(hd.ngayTao);
+        txtTenNV.setText(hd.tenNV);
+
+    }
+
     Boolean checkMaSP(String maSP) {
         for (GioHang sp : quanLyBanHang.getListGH(maHD)) {
             if (sp.getMaSP().equals(maSP)) {
@@ -120,11 +137,11 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     Boolean checkSo(String nhap) {
         try {
             double so = Double.parseDouble(nhap);
-            //Integer so1 = Integer.valueOf(nhap);
+            Integer so1 = Integer.valueOf(nhap);
             return true;
         } catch (NumberFormatException e) {
 
-            JOptionPane.showMessageDialog(this, "Đã nhập vào chữ mới nhập lại");
+            JOptionPane.showMessageDialog(this, "Đã nhập vào không đúng mới nhập lại");
             return false;
         }
 
@@ -135,15 +152,38 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Số lượng nhập bị âm");
             return false;
         } else {
-            if (soNhapVao > soSoSanh) {
-                JOptionPane.showMessageDialog(this, "Số lượng nhập vào quá lớn");
-                return false;
-            } else {
-
-            }
+//            if (soNhapVao > soSoSanh) {
+//                JOptionPane.showMessageDialog(this, "Số lượng nhập vào quá lớn");
+//                return false;
+//            } else {
+//
+//            }
             return true;
         }
 
+    }
+
+    ArrayList<HoaDon> listTrangThai(String trangThai) {
+        ArrayList<HoaDon> list = new ArrayList<>();
+        if (quanLyBanHang.getListHoaDon().isEmpty()) {
+            System.out.println("Rong");
+        } else {
+            for (HoaDon hd : quanLyBanHang.getListHoaDon()) {
+                if (hd.getTinhTrang().equals(trangThai)) {
+                    list.add(hd);
+                }
+            }
+        }
+        return list;
+    }
+
+    boolean checkForm() {
+        if (!txtMaHD.getText().isEmpty() && !txtNgayTao.getText().isEmpty() && !txtTenNV.getText().isEmpty()
+                && !txtTienKhachDua.getText().isEmpty() && !txtTongTien.getText().isEmpty() && !txtTienThua.getText().isEmpty()
+                && checkSo(txtTienKhachDua.getText())) {
+            btnThanhToan.setEnabled(true);
+        }
+        return false;
     }
 
     /**
@@ -207,15 +247,35 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
         buttonGroup1.add(rdDaThanhToan);
         rdDaThanhToan.setText("Đã thanh toán");
+        rdDaThanhToan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rdDaThanhToanMouseClicked(evt);
+            }
+        });
 
         buttonGroup1.add(rdTatCa);
         rdTatCa.setText("Tất cả");
+        rdTatCa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rdTatCaMouseClicked(evt);
+            }
+        });
 
         buttonGroup1.add(rdDaHuy);
         rdDaHuy.setText("Đã huỷ");
+        rdDaHuy.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rdDaHuyMouseClicked(evt);
+            }
+        });
 
         buttonGroup1.add(rdChoThanhToan);
         rdChoThanhToan.setText("Chờ thanh toán");
+        rdChoThanhToan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rdChoThanhToanMouseClicked(evt);
+            }
+        });
 
         tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -250,7 +310,18 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 
         jLabel7.setText("Tiền thừa");
 
+        txtTienKhachDua.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTienKhachDuaKeyReleased(evt);
+            }
+        });
+
         btnThanhToan.setText("Thanh toán");
+        btnThanhToan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnThanhToanMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -535,7 +606,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                         Double thanhTien = donGia * soLuong;
                         GioHang gioHangNew = new GioHang(maHD, maSp, tenSp, soLuong, donGia, thanhTien);
                         if (check) {
-                            quanLyBanHang.updateSLGioHangCong(maSp, soLuong);
+                            quanLyBanHang.updateSLGioHangCong(maSp, soLuong, maHD);
                             quanLyBanHang.updateSLSanPhamTru(maSp, soLuong);
                             loadDataSP(quanLyBanHang.getListSP());
                             loadDataGH(maHD);
@@ -550,11 +621,12 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
                     } else {
                         JOptionPane.showMessageDialog(this, "Nhập lại số lượng");
                     }
-                } 
+                }
 
             }
 
         }
+        txtTongTien.setText(quanLyBanHang.tinhTongTien(quanLyBanHang.getListGH(maHD)) + "");
 
 
     }//GEN-LAST:event_btnThemSanPhamMouseClicked
@@ -572,7 +644,8 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
         i++;
         HoaDon hoaDon = new HoaDon("HD0" + i, date + "", "", "Chưa thanh toán");
         quanLyBanHang.addHoaDon(hoaDon);
-        loadDataHD(quanLyBanHang.getListHoaDon());
+        
+        loadDataHD(listTrangThai("Chưa thanh toán"));
 
 
     }//GEN-LAST:event_btnTaoHoaDonMouseClicked
@@ -584,6 +657,7 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
 //        btnThanhToan.setEnabled(false);
 //        btnThemSanPham.setEnabled(false);
 //        tblChiTietSanPham.setEnabled(false);
+        rdTatCa.setSelected(true);
     }//GEN-LAST:event_formWindowActivated
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
@@ -597,8 +671,19 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
             String maHoaDon = tblHoaDon.getValueAt(selectedRow, 1).toString();
             maHD = maHoaDon;
 
+            String trangThai = (String) tblHoaDon.getValueAt(selectedRow, 4);
+            if (trangThai.equals("Chưa thanh toán")) {
+                rdChoThanhToan.setSelected(true);
+            } else if (trangThai.equals("Đã thanh toán")) {
+                rdDaThanhToan.setSelected(true);
+            } else if (trangThai.equals("Đã huỷ")) {
+                rdDaHuy.setSelected(true);
+            } else {
+                rdTatCa.setSelected(true);
+            }
             loadDataGH(maHoaDon);
-
+            setFormHD(quanLyBanHang.getRow(selectedRow));
+            txtTongTien.setText(quanLyBanHang.tinhTongTien(quanLyBanHang.getListGH(maHD)) + "");
         }
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
@@ -633,40 +718,122 @@ public class ChucNangBanHangView extends javax.swing.JFrame {
     private void btnXoaGHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaGHMouseClicked
         // TODO add your handling code here:
         int row = tblGioHang.getSelectedRow();
-        String maSP = (String) tblGioHang.getValueAt(row, 1);
+        //int row2 = tblHoaDon.getSelectedRow();
+        Integer soLuongGH = (Integer) tblGioHang.getValueAt(row, 3);
         if (row >= 0) {
+            String maSP = (String) tblGioHang.getValueAt(row, 1);
             quanLyBanHang.DeleteGioHang(maSP);
+            quanLyBanHang.updateSLSanPhamCong(maSP, soLuongGH);
             JOptionPane.showMessageDialog(this, "Xoá thành công");
             loadDataGH(maHD);
+            loadDataSP(quanLyBanHang.getListSP());
         } else {
             JOptionPane.showMessageDialog(this, "Chưa chọn dòng");
         }
+        txtTongTien.setText(quanLyBanHang.tinhTongTien(quanLyBanHang.getListGH(maHD)) + "");
     }//GEN-LAST:event_btnXoaGHMouseClicked
 
     private void btnUpdateSLGHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateSLGHMouseClicked
         // TODO add your handling code here:
         int row = tblGioHang.getSelectedRow();
+        int row2 = tblHoaDon.getSelectedRow();
         if (row >= 0) {
             String maSP = (String) tblGioHang.getValueAt(row, 1);
             Integer soLuongGH = (Integer) tblGioHang.getValueAt(row, 3);
-
+            String maHD = (String) tblHoaDon.getValueAt(row2, 1);
+            Double gia = (Double) tblGioHang.getValueAt(row, 4);
             String so = JOptionPane.showInputDialog("Nhập số lượng sản phẩm cần update");
             if (checkSo(so)) {
                 Integer soLuong = Integer.parseInt(so);
-
-                if (checkSoAm(soLuong, soLuongGH)) {
-                    quanLyBanHang.updateSLGioHangTru(maSP, soLuong);
+                Double thanhTien = gia * soLuong;
+                quanLyBanHang.setThanhTienGH(maSP, maHD, thanhTien);
+                System.out.println(quanLyBanHang.getListGH(maHD).get(row).getThanhTien() + "1");
+                if (soLuong == 0) {
+                    quanLyBanHang.DeleteGioHang(maSP);
+                    quanLyBanHang.updateSLGioHangTru(maSP, soLuong, maHD);
                     quanLyBanHang.updateSLSanPhamCong(maSP, soLuong);
                     loadDataGH(maHD);
                     loadDataSP(quanLyBanHang.getListSP());
+                    txtTongTien.setText(quanLyBanHang.tinhTongTien(quanLyBanHang.getListGH(maHD)) + "");
+                }
+                if (checkSoAm(soLuong, soLuongGH)) {
+                    quanLyBanHang.updateSLGioHangTru(maSP, soLuong, maHD);
+                    if (soLuong > soLuongGH) {
+                        quanLyBanHang.updateSLSanPhamTru(maSP, (soLuong - soLuongGH));
+                    } else {
+                        quanLyBanHang.updateSLSanPhamCong(maSP, (soLuongGH - soLuong));
+                    }
+                    loadDataGH(maHD);
+                    loadDataSP(quanLyBanHang.getListSP());
+                    txtTongTien.setText(quanLyBanHang.tinhTongTien(quanLyBanHang.getListGH(maHD)) + "");
                 }
 
-            } 
+            }
 
         } else {
             JOptionPane.showMessageDialog(this, "Chưa chọn dòng");
         }
     }//GEN-LAST:event_btnUpdateSLGHMouseClicked
+
+    private void rdChoThanhToanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdChoThanhToanMouseClicked
+        // TODO add your handling code here:
+        String n = "Chưa thanh toán";
+        loadDataHD(listTrangThai(n));
+
+
+    }//GEN-LAST:event_rdChoThanhToanMouseClicked
+
+    private void rdTatCaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdTatCaMouseClicked
+        // TODO add your handling code here:
+        loadDataHD(quanLyBanHang.getListHoaDon());
+
+    }//GEN-LAST:event_rdTatCaMouseClicked
+
+    private void rdDaHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdDaHuyMouseClicked
+        // TODO add your handling code here:
+        String n = "Đã huỷ";
+        loadDataHD(listTrangThai(n));
+
+    }//GEN-LAST:event_rdDaHuyMouseClicked
+
+    private void rdDaThanhToanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdDaThanhToanMouseClicked
+        // TODO add your handling code here:
+        String n = "Đã thanh toán";
+        loadDataHD(listTrangThai(n));
+    }//GEN-LAST:event_rdDaThanhToanMouseClicked
+
+    private void txtTienKhachDuaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachDuaKeyReleased
+        // TODO add your handling code here:
+        String tienKhachDua = txtTienKhachDua.getText().trim();
+        double tongTien = Double.valueOf(txtTongTien.getText());
+        double tienThua = 0.0;
+        if (checkSo(tienKhachDua)) {
+            double tienKhach = Double.valueOf(tienKhachDua);
+            tienThua = tienKhach - tongTien;
+            if (tienThua < 0) {
+                //JOptionPane.showMessageDialog(this, "Quý khách cần thanh toán thêm: "+ (tienThua - tienThua - tienThua));
+                txtTienThua.setText("");
+            } else {
+                txtTienThua.setText(tienThua + "");
+                btnThanhToan.setEnabled(true);
+            }
+        }
+    }//GEN-LAST:event_txtTienKhachDuaKeyReleased
+
+    private void btnThanhToanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThanhToanMouseClicked
+        // TODO add your handling code here:
+        String ss = "Đã thanh toán";
+
+        int row = tblHoaDon.getSelectedRow();
+        String maHD = (String) tblHoaDon.getValueAt(row, 1);
+        if (row >= 0) {
+            loadDataHD(quanLyBanHang.updateTTHD(maHD, ss));
+            JOptionPane.showMessageDialog(this, "Thanh toán thành công");
+            loadDataHD(quanLyBanHang.getListHoaDon());
+        } else {
+            JOptionPane.showMessageDialog(this, "Chưa chọn dòng");
+        }
+    }//GEN-LAST:event_btnThanhToanMouseClicked
 
     /**
      * @param args the command line arguments

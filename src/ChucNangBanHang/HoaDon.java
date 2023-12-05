@@ -55,6 +55,13 @@ public class HoaDon {
     public void setTinhTrang(String tinhTrang) {
         this.tinhTrang = tinhTrang;
     }
-   
+
+    @Override
+    public String toString() {
+        return "HoaDon{" + "maHoaDon=" + maHoaDon + ", ngayTao=" + ngayTao + ", tenNV=" + tenNV + ", tinhTrang=" + tinhTrang + '}';
+    }
+   public void inThongTin(){
+       System.out.println("HoaDon{" + "maHoaDon=" + maHoaDon + ", ngayTao=" + ngayTao + ", tenNV=" + tenNV + ", tinhTrang=" + tinhTrang + '}');
+   }
    
 }
