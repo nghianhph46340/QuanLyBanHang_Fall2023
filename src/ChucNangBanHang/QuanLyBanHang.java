@@ -20,6 +20,7 @@ public class QuanLyBanHang {
     ArrayList<SanPham> listSanPham = new ArrayList<>();
     ArrayList<GioHang> listGioHang = new ArrayList<>();
     ArrayList<HoaDon> listHoaDon = new ArrayList<>();
+    ArrayList<HoaDonChiTiet> listHDCT = new ArrayList<>();
 
     public ArrayList<SanPham> getListSP() {
         listSanPham.clear();
@@ -343,5 +344,53 @@ public class QuanLyBanHang {
             e.printStackTrace();
         }
         return listHoaDon;
+    }
+    public ArrayList<HoaDonChiTiet> getListHDCT(String maHD){
+        listHDCT.clear();
+        try {
+            String sql = "select ma_hoa_don, ho_ten, ma_san_pham, ten_san_pham, so_luong,don_gia, thanh_tien, ngay_tao" + "\n" +
+                "from HoaDonChiTiet" + "\n" +
+                "where ma_hoa_don = ?";
+            Connection conn = DBConnect.getConnection();
+            PreparedStatement ptm = conn.prepareStatement(sql);
+            ptm.setString(1, maHD);
+            ResultSet rs = ptm.executeQuery();
+            while (rs.next()) {
+                HoaDonChiTiet hdct = new HoaDonChiTiet();
+                hdct.setMaHD(rs.getString(1));
+                hdct.setTenKH(rs.getString(2));
+                hdct.setMaSP(rs.getString(3));
+                hdct.setTenSP(rs.getString(4));
+                hdct.setSoLuong(rs.getInt(5));
+                hdct.setDonGia(rs.getDouble(6));
+                hdct.setThanhTien(rs.getDouble(7));
+                hdct.setNgayTao(rs.getString(8));
+                listHDCT.add(hdct);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listHDCT;
+    }
+    public void addHDCT(HoaDonChiTiet hdct) {
+        String sql = "insert into HoaDonChiTiet(ma_hoa_don,ma_khach_hang,ma_nhan_vien,ho_ten,ma_san_pham,ten_san_pham,so_luong,don_gia,thanh_tien,ngay_tao) values (?,?,?,?,?,?,?,?,?,?)";
+        try {
+            Connection conn = DBConnect.getConnection();
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, hdct.getMaHD());
+            stm.setString(2, "KH001");
+            stm.setString(3, "NV001");
+            stm.setString(4, hdct.getTenKH());
+            stm.setString(5, hdct.getMaSP());
+            stm.setString(6, hdct.getTenSP());
+            stm.setInt(7, hdct.getSoLuong());
+            stm.setDouble(8, hdct.getDonGia());
+            stm.setDouble(9, hdct.getThanhTien());
+            stm.setString(10, hdct.getNgayTao());
+            stm.executeUpdate();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
